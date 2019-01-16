@@ -5,5 +5,5 @@ require_once(__DIR__ . "./autoload.php");
 $parser = new PgnParser('../2017.pgn');
 $pgn = $parser->getUnparsedGames();
 $DatabaseGames = new DatabaseGames();
-$DatabaseGames->setPgnToDatabase($pgn);
-//var_dump($DatabaseGames->getGamesToDatabase());
+//$DatabaseGames->setPgnToDatabase($pgn);
+var_dump($pgn);

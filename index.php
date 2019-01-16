@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . "/chessParser/autoload.php");
+require_once(__DIR__ . "/src/autoload.php");
 $DatabaseGames = new DatabaseGames();
 $games[] = [];
 $i = 0;
