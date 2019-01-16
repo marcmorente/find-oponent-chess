@@ -151,7 +151,7 @@ $(document).ready(function () {
     //start doing stuff
 
     $(document).delegate('#find_player', 'click', function () {
-
+        var data = [];
         var name_player = $('#name_player').val();
         var parametros = {
             "name_player": name_player
@@ -180,13 +180,39 @@ $(document).ready(function () {
                     });
                     var h = g.header();
 
-                    $('#gameSelect')
-                            .append($('<option></option>')
-                                    .attr('value', i)
-                                    .text(h.White + ' - ' + h.Black + ', ' + h.Date));
-
+                    /*$('#gameSelect').append($('<option></option>')
+                            .attr('value', i)
+                            .text(h.White + ' - ' + h.Black + ', ' + h.Date));*/
+                            
+                    data.push({player: '<td>' + h.White + ' - ' + h.Black + ', ' + h.Date + '</td>'});
+                    
+                    
                     i++;
                 });
+                if($('#myTable').length > 0){
+                    console.log("Exist: "+$('#myTable2').length);
+                    if ( !$.fn.dataTable.isDataTable( '#myTable' ) ) {
+                        $('#myTable').DataTable( {
+                            dom: 'Bfrtip',
+                            "bFilter": true,
+                            data: data,
+                            stateSave: true,
+                            deferRender:    true,
+                            //scrollY:        800,
+                            scrollCollapse: true,
+                            scroller:       true,
+                            //order: [[ 0, 'desc' ]],
+                            "columns": [
+                              {"data": "player"}
+                            ],
+                            pageLength: 50,
+                            buttons: [
+                                'excel'
+                            ]
+                        });
+                        $('#table').show();
+                    }
+                }
             }
         });
 
