@@ -28,8 +28,7 @@ class DatabaseGames extends MysqlDatabaseConnection
     
     public function getGamesToDatabase()
     {
-        //$query = "SELECT pgn FROM games LIMIT 2";
-        $query = "SELECT * FROM `games` WHERE pgn LIKE '%de la riva%'";
+        $query = "SELECT pgn FROM games";
         
         $stmt = $this->database_handle->prepare($query);
         $stmt->execute();

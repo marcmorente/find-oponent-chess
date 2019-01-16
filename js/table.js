@@ -55,7 +55,7 @@ Table.prototype.build = function(container) {
             row.append(td.clone().text(e)); //fills in the row
         });
         tbody.append(row); //puts row on the tbody
-    })
+    });
  
     $(container).append(table.append(tbody)); //puts entire table in the container
  

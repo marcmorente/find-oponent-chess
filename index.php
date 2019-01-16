@@ -79,7 +79,7 @@ foreach ($DatabaseGames->getGamesToDatabase() as $value) {
                             <div id="result-search"></div>
                             <div class="table-container"></div>
                             
-<!--                            <select id="gameSelect" class="form-control input-sm" onchange="loadGame(this.value);return false;"></select>-->
+                            <select id="gameSelect" class="form-control input-sm" onchange="loadGame(this.value);return false;"></select>
                         </div>
                     </div>
                 </form>
@@ -112,62 +112,6 @@ foreach ($DatabaseGames->getGamesToDatabase() as $value) {
     </div>
     <script src="chessboardjs/js/chessboard-0.3.0.min.js"></script>
     <script src="chessjs/chess.js"></script>
-    <script>
-        
-        var pgnData = [];
-        var pgn_database = [];
-        <?php foreach ($games as $value) { ?>
-            <?php foreach ($value as $val) { ?>
-                pgn_database.push('<?= $val; ?>');
-            <?php } ?> 
-            pgnData.push(pgn_database);
-        <?php } ?> 
-
-        console.log(pgnData);
-        
-        $(document).ready(function () {
-            var data = {
-                k: ['Name', 'Occupation'],
-                v: [['Chandler', 'IT Procurement Manager'],
-                    ['Joey', 'Out-of-work Actor'],
-                    ['Monica', 'Chef'],
-                    ['Rachel', 'Assistant Buyer'],
-                    ['Ross', 'Dinosaurs']]
-            }
-            //creates new table object
-            var table = new Table();
-
-            //sets table data and builds it
-            table
-                .setHeader(data.k)
-                .setData(data.v)
-                .setTableClass('table')
-                .build()
-            $(document).delegate('#find_player', 'click', function() {
-                var name_player = $('#name_player').val();
-
-                var parametros = {
-                    "name_player" : name_player
-                };
-                $.ajax({
-                    data: parametros,
-                    url : "get_games_player.php",
-                    type: "POST",
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log('Error: ' + errorThrown + ' ' + textStatus + ' ' + jqXHR);
-                    },
-                    success: function(data) {
-                        console.log(data);
-                    }
-                });
-
-            });
-            
-        });
-
-        
-    </script>
-    
     
 <!--    <script src="data/games.js"></script>-->
     <script src="js/pgnviewer.js"></script>
