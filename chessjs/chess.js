@@ -1515,7 +1515,8 @@ var Chess = function (fen) {
         },
 
         load_pgn: function (pgn, options) {
-            var pgn = pgn.toString();
+            //var pgn = pgn.toString();
+            //console.log(pgn);
             function mask(str) {
                 return str.replace(/\n/g, '\\n').replace(/\r/g, '\\r');
             }
@@ -1665,6 +1666,7 @@ var Chess = function (fen) {
 
             /* parse PGN header */
             var headers = parse_pgn_header(header_string, options);
+            //console.log(headers);
             for (var key in headers) {
                 set_header([key, headers[key]]);
             }

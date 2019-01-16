@@ -1,13 +1,15 @@
 //Write the game to the DOM
 function writeGameText(g) {
-
+    
     //remove the header to get the moves
     var h = g.header();
-    var gameHeaderText = '<h4>' + h.White + ' - ' + h.Black + '</h4>';
+    var gameHeaderText = '<h4>' + h.White + ' ('+h.WhiteElo+') - ' + h.Black + ' ('+h.BlackElo+')</h4>';
     gameHeaderText += '<h5>' + h.Event + ', ' + h.Site + ' ' + h.EventDate + '</h5>';
     var pgn = g.pgn();
+    
+    
     var gameMoves = pgn.replace(/\[(.*?)\]/gm, '').replace(h.Result, '').trim();
-
+    //console.log('gameMoves --> ' + gameMoves);
     //format the moves so each one is individually identified, so it can be highlighted
     moveArray = gameMoves.split(/([0-9]+\.\s)/).filter(function (n) {
         return n;
@@ -59,9 +61,51 @@ $('#btnEnd').on('click', function () {
     board.position(game.fen());
 });
 
-//key bindings
-$(document).ready(function () {
+//used for clickable moves in gametext
+//not used for buttons for efficiency
+function goToMove(ply) {
+    if (ply > gameHistory.length - 1) ply = gameHistory.length - 1;
+    game.reset();
+    for (var i = 0; i <= ply; i++) {
+        game.move(gameHistory[i].san);
+    }
+    currentPly = i - 1;
+    board.position(game.fen());
+}
 
+var onChange = function onChange() { //fires when the board position changes
+    //highlight the current move
+    $("[class^='gameMove']").removeClass('highlight');
+    $('.gameMove' + currentPly).addClass('highlight');
+}
+
+function loadGame(i) {
+    game = new Chess();
+    //console.log(game);
+    game.load_pgn(pgnData[i].join('\n'), {
+        newline_char: '\n'
+    });
+    //console.log(pgnData[i].join('\n'));
+    /*game.load_pgn(pgnData[i], {
+        newline_char: '\n'
+    });*/
+    writeGameText(game);
+    gameHistory = game.history({
+        verbose: true
+    });
+    goToMove(-1);
+    currentGame = i;
+}
+
+var board, //the chessboard
+    game, //the current  game
+    games, //array of all loaded games
+    gameHistory,
+    currentPly,
+    currentGame;
+
+$(document).ready(function () {
+    //key bindings
     $(document).keydown(function (e) {
         if (e.keyCode == 39) { //right arrow
             if (e.ctrlKey) {
@@ -99,63 +143,19 @@ $(document).ready(function () {
             return false;
         }
     });
-
-
-});
-
-//used for clickable moves in gametext
-//not used for buttons for efficiency
-function goToMove(ply) {
-    if (ply > gameHistory.length - 1) ply = gameHistory.length - 1;
-    game.reset();
-    for (var i = 0; i <= ply; i++) {
-        game.move(gameHistory[i].san);
-    }
-    currentPly = i - 1;
-    board.position(game.fen());
-}
-
-var onChange = function onChange() { //fires when the board position changes
-    //highlight the current move
-    $("[class^='gameMove']").removeClass('highlight');
-    $('.gameMove' + currentPly).addClass('highlight');
-}
-
-function loadGame(i) {
-    game = new Chess();
-    game.load_pgn(pgnData[i].join('\n'), {
-        newline_char: '\n'
-    });
-    /*console.log(pgnData[i]);
-    game.load_pgn(pgnData[i], {
-        newline_char: '\n'
-    });*/
-    writeGameText(game);
-    gameHistory = game.history({
-        verbose: true
-    });
-    goToMove(-1);
-    currentGame = i;
-}
-
-var board, //the chessboard
-    game, //the current  game
-    games, //array of all loaded games
-    gameHistory,
-    currentPly,
-    currentGame;
-
-$(document).ready(function () {
     //start doing stuff
 
     //only need the headers here, issue raised on github
     //read all the games to populate the select
+    //console.log('-------------' + pgnData);
     for (var i = 0; i < pgnData.length; i++) {
         var g = new Chess();
+        //console.log(pgnData[i].join('\n'));
         g.load_pgn(pgnData[i].join('\n'), {
             newline_char: '\n'
         });
         var h = g.header();
+        
         $('#gameSelect')
             .append($('<option></option>')
                 .attr('value', i)
@@ -166,13 +166,13 @@ $(document).ready(function () {
     var cfg = {
         pieceTheme: 'chessboardjs/img/chesspieces/wikipedia/{piece}.png',
         position: 'start',
-        showNotation: false,
+        showNotation: true,
         onChange: onChange
     };
     board = new ChessBoard('board', cfg);
     $(window).resize(board.resize);
 
     //load the first game
-    loadGame(0);
-    goToMove(gameHistory.length - 1);
+    //loadGame(0);
+    //goToMove(gameHistory.length - 1);
 });
