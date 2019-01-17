@@ -4,6 +4,8 @@ $(document).ready(function () {
     var pgnData = [];
     var pgn_database = [];
 
+
+
     //Write the game to the DOM
     function writeGameText(g) {
 
@@ -151,7 +153,8 @@ $(document).ready(function () {
     //start doing stuff
 
     $(document).delegate('#find_player', 'click', function () {
-        var data = [];
+
+        var dataTable = [];
         var name_player = $('#name_player').val();
         var parametros = {
             "name_player": name_player
@@ -164,15 +167,13 @@ $(document).ready(function () {
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log('Error: ' + errorThrown + ' ' + textStatus + ' ' + jqXHR);
             },
-            success: function (data) {
-                var i = 0;
-                data.forEach(function (d) {
-                    //console.log(d);
-                    d.forEach(function (pgnGame) {
-                        pgn_database.push(pgnGame);
-                    });
-                    pgnData.push(pgn_database);
-
+            beforeSend: function (xhr) {
+                $("#find_player").text('Buscant partides...');
+                $('#find_player').prop('disabled', true);
+            },
+            success: function (pgnData) {
+                for (var i = 0; i < pgnData.length; i++) {
+                    console.log('primer for ' + i);
                     var g = new Chess();
                     //console.log(pgnData[i].join('\n'));
                     g.load_pgn(pgnData[i].join('\n'), {
@@ -181,34 +182,30 @@ $(document).ready(function () {
                     var h = g.header();
 
                     /*$('#gameSelect').append($('<option></option>')
-                            .attr('value', i)
-                            .text(h.White + ' - ' + h.Black + ', ' + h.Date));*/
-                            
-                    data.push({player: '<td>' + h.White + ' - ' + h.Black + ', ' + h.Date + '</td>'});
+                     .attr('value', i)
+                     .text(h.White + ' - ' + h.Black + ', ' + h.Date));*/
+
+                    dataTable.push({
+                        tournament: h.Event,
+                        player: h.White + ' - ' + h.Black + ', ' + h.Date,
+                        btn: '<button class="edit btn btn-default show-pgn" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
+                    });
                     
-                    
-                    i++;
-                });
-                if($('#myTable').length > 0){
-                    console.log("Exist: "+$('#myTable2').length);
-                    if ( !$.fn.dataTable.isDataTable( '#myTable' ) ) {
-                        $('#myTable').DataTable( {
-                            dom: 'Bfrtip',
-                            "bFilter": true,
-                            data: data,
-                            stateSave: true,
-                            deferRender:    true,
-                            //scrollY:        800,
-                            scrollCollapse: true,
-                            scroller:       true,
-                            //order: [[ 0, 'desc' ]],
+                }
+                $("#find_player").text('Buscar jugador');
+                $('#find_player').prop('disabled', false);
+                if ($('#myTable').length > 0) {
+                    console.log("Exist: " + $('#myTable').length);
+                    if (!$.fn.dataTable.isDataTable('#myTable')) {
+                        var table = $('#myTable').DataTable({
+                            data: dataTable,
+                            order: [[0, 'desc']],
                             "columns": [
-                              {"data": "player"}
+                                {"data": "tournament"},
+                                {"data": "player"},
+                                {"data": "btn"}
                             ],
-                            pageLength: 50,
-                            buttons: [
-                                'excel'
-                            ]
+                            pageLength: 10
                         });
                         $('#table').show();
                     }
