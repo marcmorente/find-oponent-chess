@@ -27,7 +27,7 @@ $(document).ready(function () {
             if (!/^[0-9]+\.$/.test(s)) { //move numbers
                 m = s.split(/\s+/);
                 for (var j = 0, ll = m.length; j < ll; ++j) {
-                    m[j] = '<span class="gameMove' + (i + j - 1) + '"><a id="myLink" href="#" onclick="goToMove(' + (i + j - 1) + ');return false;">' + m[j] + '</a></span>';
+                    m[j] = '<span class="gameMove' + (i + j - 1) + ' move"><a id="myLink" href="#" value="' + (i + j - 1) + '">' + m[j] + '</a></span>';
                 }
                 s = m.join(' ');
             }
@@ -86,11 +86,12 @@ $(document).ready(function () {
         //highlight the current move
         $("[class^='gameMove']").removeClass('highlight');
         $('.gameMove' + currentPly).addClass('highlight');
-    }
+    };
 
     function loadGame(i) {
         game = new Chess();
-        //console.log(game);
+        
+        //console.log(pgnData[i]);
         game.load_pgn(pgnData[i].join('\n'), {
             newline_char: '\n'
         });
@@ -151,11 +152,12 @@ $(document).ready(function () {
         }
     });
     //start doing stuff
+    
 
     $(document).delegate('#find_player', 'click', function () {
 
         var dataTable = [];
-        var name_player = $('#name_player').val();
+        var name_player = $('#name_player').val().toString().replace(",", "");
         var parametros = {
             "name_player": name_player
         };
@@ -171,48 +173,70 @@ $(document).ready(function () {
                 $("#find_player").text('Buscant partides...');
                 $('#find_player').prop('disabled', true);
             },
-            success: function (pgnData) {
-                for (var i = 0; i < pgnData.length; i++) {
-                    console.log('primer for ' + i);
-                    var g = new Chess();
-                    //console.log(pgnData[i].join('\n'));
-                    g.load_pgn(pgnData[i].join('\n'), {
-                        newline_char: '\n'
-                    });
-                    var h = g.header();
-
-                    /*$('#gameSelect').append($('<option></option>')
-                     .attr('value', i)
-                     .text(h.White + ' - ' + h.Black + ', ' + h.Date));*/
-
-                    dataTable.push({
-                        tournament: h.Event,
-                        player: h.White + ' - ' + h.Black + ', ' + h.Date,
-                        btn: '<button class="edit btn btn-default show-pgn" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
-                    });
+            success: function (p) {
+                
+                if (p.toString() != "not_found") {
                     
-                }
-                $("#find_player").text('Buscar jugador');
-                $('#find_player').prop('disabled', false);
-                if ($('#myTable').length > 0) {
-                    console.log("Exist: " + $('#myTable').length);
-                    if (!$.fn.dataTable.isDataTable('#myTable')) {
-                        var table = $('#myTable').DataTable({
-                            data: dataTable,
-                            order: [[0, 'desc']],
-                            "columns": [
-                                {"data": "tournament"},
-                                {"data": "player"},
-                                {"data": "btn"}
-                            ],
-                            pageLength: 10
+                    for (var i = 0; i < p.length; i++) {
+                        pgnData.push(p[i]);
+                        //console.log('primer for ' + i);
+                        var g = new Chess();
+                        //console.log(p[i].join('\n'));
+                        g.load_pgn(p[i].join('\n'), {
+                            newline_char: '\n'
                         });
-                        $('#table').show();
-                    }
-                }
-            }
-        });
+                        var h = g.header();
 
+                        /*$('#gameSelect').append($('<option></option>')
+                         .attr('value', i)
+                         .text(h.White + ' - ' + h.Black + ', ' + h.Date));*/
+
+                        dataTable.push({
+                            tournament: h.Event,
+                            player: h.White + ' - ' + h.Black + ', ' + h.Date,
+                            btn: '<button class="edit btn btn-default show-pgn" value="'+i+'" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
+                        });
+
+                    }
+                    $("#find_player").text('Buscar jugador');
+                    $('#find_player').prop('disabled', false);
+                    if ($('#myTable').length > 0) {
+                        if (!$.fn.dataTable.isDataTable('#myTable')) {
+                            var table = $('#myTable').DataTable({
+                                data: dataTable,
+                                order: [[0, 'desc']],
+                                "columns": [
+                                    {"data": "tournament"},
+                                    {"data": "player"},
+                                    {"data": "btn"}
+                                ],
+                                pageLength: 10
+                            });
+                            $('#table').show();
+                        }
+                    }
+                    
+                    
+                } else {
+                    alert("No s'ha trobat cap partida amb el nom " + name_player);
+                    $("#find_player").text('Buscar jugador');
+                    $('#find_player').prop('disabled', false);
+                }
+
+            }
+            
+        });
+        
+        
+
+    });
+    
+    $(document).delegate('.show-pgn', 'click', function () {
+        loadGame($(this).val());
+    });
+    
+    $(document).delegate('.move', 'click', function () {
+        goToMove($(this).val());
     });
     //only need the headers here, issue raised on github
     //read all the games to populate the select

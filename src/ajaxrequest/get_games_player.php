@@ -20,7 +20,7 @@ if (count($player_list) > 0) {
     echo json_encode($games);
     
 } else {
-    echo "No hi han resultats amb aquest nom";
+    echo json_encode("not_found");
 }
 
 
