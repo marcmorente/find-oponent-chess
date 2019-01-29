@@ -90,7 +90,7 @@ $(document).ready(function () {
 
     function loadGame(i) {
         game = new Chess();
-        
+
         //console.log(pgnData[i]);
         game.load_pgn(pgnData[i].join('\n'), {
             newline_char: '\n'
@@ -152,14 +152,21 @@ $(document).ready(function () {
         }
     });
     //start doing stuff
-    
+
 
     $(document).delegate('#find_player', 'click', function () {
-
+        //delete dataTable;
+        $('#table').hide();
+        $('#game-data').hide();
         var dataTable = [];
+
         var name_player = $('#name_player').val().toString().replace(",", "");
+        var surname_player = $('#surname_player').val().toString().replace(",", "");
+        var surname2_player = $('#surname2_player').val().toString().replace(",", "");
         var parametros = {
-            "name_player": name_player
+            "name_player": name_player,
+            "surname_player": surname_player,
+            "surname2_player": surname2_player
         };
         $.ajax({
             data: parametros,
@@ -174,9 +181,9 @@ $(document).ready(function () {
                 $('#find_player').prop('disabled', true);
             },
             success: function (p) {
-                
+                console.log(p);
                 if (p.toString() != "not_found") {
-                    
+                    delete dataTable;
                     for (var i = 0; i < p.length; i++) {
                         pgnData.push(p[i]);
                         //console.log('primer for ' + i);
@@ -194,29 +201,26 @@ $(document).ready(function () {
                         dataTable.push({
                             tournament: h.Event,
                             player: h.White + ' - ' + h.Black + ', ' + h.Date,
-                            btn: '<button class="edit btn btn-default show-pgn" value="'+i+'" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
+                            btn: '<button class="edit btn btn-default show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
                         });
 
                     }
                     $("#find_player").text('Buscar jugador');
                     $('#find_player').prop('disabled', false);
-                    if ($('#myTable').length > 0) {
-                        if (!$.fn.dataTable.isDataTable('#myTable')) {
-                            var table = $('#myTable').DataTable({
-                                data: dataTable,
-                                order: [[0, 'desc']],
-                                "columns": [
-                                    {"data": "tournament"},
-                                    {"data": "player"},
-                                    {"data": "btn"}
-                                ],
-                                pageLength: 10
-                            });
-                            $('#table').show();
-                        }
-                    }
-                    
-                    
+                    var table = $('#myTable').DataTable({
+                        data: dataTable,
+                        order: [[0, 'desc']],
+                        "columns": [
+                            {"data": "tournament"},
+                            {"data": "player"},
+                            {"data": "btn"}
+                        ],
+                        pageLength: 10
+                    });
+                    $('#table').show();
+                    table.destroy();
+
+
                 } else {
                     alert("No s'ha trobat cap partida amb el nom " + name_player);
                     $("#find_player").text('Buscar jugador');
@@ -224,17 +228,18 @@ $(document).ready(function () {
                 }
 
             }
-            
+
         });
-        
-        
+
+
 
     });
-    
+
     $(document).delegate('.show-pgn', 'click', function () {
         loadGame($(this).val());
+        $('#game-data').show();
     });
-    
+
     $(document).delegate('.move', 'click', function () {
         goToMove($(this).val());
     });

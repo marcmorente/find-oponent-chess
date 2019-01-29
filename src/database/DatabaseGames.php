@@ -9,6 +9,10 @@ class DatabaseGames extends MysqlDatabaseConnection
 {
 
     var $games;
+    var $name_player;
+    var $surname_player;
+    var $surname2_player;
+    var $full_name;
 
     public function setPgnToDatabase($games)
     {
@@ -38,20 +42,34 @@ class DatabaseGames extends MysqlDatabaseConnection
         
     }
     
-    public function getGamesToDatabaseByName($search)
+    public function getGamesToDatabaseByName($name_player, $surname_player, $surname2_player)
     {
-        //$query = "SELECT pgn FROM games LIMIT 2";
-        $this->search = "%$search%";
-        $query = "SELECT * FROM `games` WHERE pgn LIKE ? ";
+        $this->name_player = "%$name_player%";
+        $this->surname_player = "%$surname_player%";
+        $this->surname2_player = "%$surname2_player%";
+        
+        if (! empty($name_player) && ! empty($surname_player) ) {
+            $query = "SELECT * FROM (SELECT * FROM `games` WHERE pgn LIKE ?) AS surname  WHERE surname.pgn LIKE ?";
+            $stmt = $this->database_handle->prepare($query);
+            $stmt->bindParam(1, $this->surname_player, PDO::PARAM_STR);
+            $stmt->bindParam(2, $this->name_player, PDO::PARAM_STR);
+            $stmt->execute();
+            $row = $stmt->fetchAll();
+        } else if (! empty($name_player) && ! empty($surname_player) && ! empty($surname2_player) ) {
+            $query = "SELECT * FROM (SELECT * FROM (SELECT * FROM `games` WHERE pgn LIKE ?) AS surname  WHERE surname.pgn LIKE ?) AS surname2 WHERE surname2.pgn LIKE ?";
+            $stmt = $this->database_handle->prepare($query);
+            $stmt->bindParam(1, $this->surname_player, PDO::PARAM_STR);
+            $stmt->bindParam(2, $this->name_player, PDO::PARAM_STR);
+            $stmt->bindParam(3, $this->surname2_player, PDO::PARAM_STR);
+            $stmt->execute();
+            $row = $stmt->fetchAll();
+        }
         
         
-        $stmt = $this->database_handle->prepare($query);
         
-        $stmt->bindParam(1, $this->search);
         
-        $stmt->execute();
         
-        $row = $stmt->fetchAll();
+        
         
         return $row;
         

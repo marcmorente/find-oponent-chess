@@ -3,9 +3,12 @@
 require_once("../autoload.php");
 
 $DatabaseGames = new DatabaseGames();
-$search_player = $_POST['name_player'];
-$player_list = $DatabaseGames->getGamesToDatabaseByName($search_player);
-
+$name_player = $_POST['name_player'];
+$surname_player = $_POST['surname_player'];
+$surname2_player = $_POST['surname2_player'];
+$player_list = $DatabaseGames->getGamesToDatabaseByName($name_player, $surname_player, $surname2_player);
+//echo json_encode($player_list);
+//exit;
 $games[] = [];
 $i = 0;
 if (count($player_list) > 0) {
