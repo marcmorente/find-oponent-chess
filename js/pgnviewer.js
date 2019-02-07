@@ -153,8 +153,11 @@ $(document).ready(function () {
 
 
     $(document).delegate('#find_player', 'click', function (e) {
+        
         e.preventDefault();
         //delete dataTable;
+        board = new ChessBoard('board', cfg);
+        $(window).resize(board.resize);
         $('#table').hide();
         $('#game-data').hide();
         var dataTable = [];
