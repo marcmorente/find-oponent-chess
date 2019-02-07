@@ -167,7 +167,7 @@ $(document).ready(function () {
         var surname2_player = $('#surname2_player').val().toString().replace(",", "");
 
         if (name_player == '' && surname_player == '' && surname2_player == '') {
-            alert("Has d'omplir algún nom");
+            alert("Has d'omplir algun nom");
             $("#find_player").text('Buscar jugador');
             $('#find_player').prop('disabled', false);
             return false;
@@ -242,7 +242,7 @@ $(document).ready(function () {
 
 
                 } else {
-                    alert("No s'ha trobat cap partida amb el nom " + name_player);
+                    alert("No s'ha trobat cap partida amb aquest criteri de búsqueda ");
                     $("#find_player").text('Buscar jugador');
                     $('#find_player').prop('disabled', false);
                 }
