@@ -181,7 +181,9 @@ $(document).ready(function () {
             url: "src/ajaxrequest/get_games_player.php",
             type: "POST",
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log('Error: ' + errorThrown + ' ' + textStatus + ' ' + jqXHR);
+                console.log('Error: ' + errorThrown.toString() + ' ' + textStatus.toString() + ' ' + jqXHR.toString());
+                $("#find_player").text('Buscar jugador');
+                $('#find_player').prop('disabled', false);
             },
             beforeSend: function (xhr) {
                 $("#find_player").text('Buscant partides...');
