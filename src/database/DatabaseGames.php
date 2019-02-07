@@ -27,7 +27,7 @@ class DatabaseGames extends MysqlDatabaseConnection
                 exit("Error insert");
             }
         }
-        echo 'Imoprt Successful ';
+        echo 'Imoprt Successful <br/>';
     }
     
     public function getGamesToDatabase()
@@ -51,15 +51,15 @@ class DatabaseGames extends MysqlDatabaseConnection
         if (! empty($name_player) && ! empty($surname_player) ) {
             $query = "SELECT * FROM (SELECT * FROM `games` WHERE pgn LIKE ?) AS surname  WHERE surname.pgn LIKE ?";
             $stmt = $this->database_handle->prepare($query);
-            $stmt->bindParam(1, $this->surname_player, PDO::PARAM_STR);
-            $stmt->bindParam(2, $this->name_player, PDO::PARAM_STR);
+            $stmt->bindParam(1, $this->name_player, PDO::PARAM_STR);
+            $stmt->bindParam(2, $this->surname_player, PDO::PARAM_STR);
             $stmt->execute();
             $row = $stmt->fetchAll();
         } else if (! empty($name_player) && ! empty($surname_player) && ! empty($surname2_player) ) {
             $query = "SELECT * FROM (SELECT * FROM (SELECT * FROM `games` WHERE pgn LIKE ?) AS surname  WHERE surname.pgn LIKE ?) AS surname2 WHERE surname2.pgn LIKE ?";
             $stmt = $this->database_handle->prepare($query);
-            $stmt->bindParam(1, $this->surname_player, PDO::PARAM_STR);
-            $stmt->bindParam(2, $this->name_player, PDO::PARAM_STR);
+            $stmt->bindParam(1, $this->name_player, PDO::PARAM_STR);
+            $stmt->bindParam(2, $this->surname_player, PDO::PARAM_STR);
             $stmt->bindParam(3, $this->surname2_player, PDO::PARAM_STR);
             $stmt->execute();
             $row = $stmt->fetchAll();
@@ -71,7 +71,7 @@ class DatabaseGames extends MysqlDatabaseConnection
             $stmt->execute();
             $row = $stmt->fetchAll();
         } else {
-            
+
             $array = array(
                 $name_player => $this->name_player, 
                 $surname_player => $this->surname_player, 
