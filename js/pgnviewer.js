@@ -1,5 +1,3 @@
-
-
 $(document).ready(function () {
     var pgnData = [];
     var pgn_database = [];
@@ -17,7 +15,6 @@ $(document).ready(function () {
 
 
         var gameMoves = pgn.replace(/\[(.*?)\]/gm, '').replace(h.Result, '').trim();
-        //console.log('gameMoves --> ' + gameMoves);
         //format the moves so each one is individually identified, so it can be highlighted
         moveArray = gameMoves.split(/([0-9]+\.\s)/).filter(function (n) {
             return n;
@@ -27,7 +24,7 @@ $(document).ready(function () {
             if (!/^[0-9]+\.$/.test(s)) { //move numbers
                 m = s.split(/\s+/);
                 for (var j = 0, ll = m.length; j < ll; ++j) {
-                    m[j] = '<span class="gameMove' + (i + j - 1) + ' move"><a id="myLink" href="#" value="' + (i + j - 1) + '">' + m[j] + '</a></span>';
+                    m[j] = '<span class="gameMove' + (i + j - 1) + ' move" data-value="' + (i + j - 1) + '"><a id="myLink" href="#" value="' + (i + j - 1) + '">' + m[j] + '</a></span>';
                 }
                 s = m.join(' ');
             }
@@ -41,7 +38,7 @@ $(document).ready(function () {
 
     }
 
-//buttons
+    //buttons
     $('#btnStart').on('click', function () {
         game.reset();
         currentPly = -1;
@@ -69,9 +66,10 @@ $(document).ready(function () {
         board.position(game.fen());
     });
 
-//used for clickable moves in gametext
-//not used for buttons for efficiency
+    //used for clickable moves in gametext
+    //not used for buttons for efficiency
     function goToMove(ply) {
+        console.log("play --> " + ply);
         if (ply > gameHistory.length - 1)
             ply = gameHistory.length - 1;
         game.reset();
@@ -108,11 +106,11 @@ $(document).ready(function () {
     }
 
     var board, //the chessboard
-            game, //the current  game
-            games, //array of all loaded games
-            gameHistory,
-            currentPly,
-            currentGame;
+        game, //the current  game
+        games, //array of all loaded games
+        gameHistory,
+        currentPly,
+        currentGame;
     //key bindings
     $(document).keydown(function (e) {
         if (e.keyCode == 39) { //right arrow
@@ -154,15 +152,24 @@ $(document).ready(function () {
     //start doing stuff
 
 
-    $(document).delegate('#find_player', 'click', function () {
+    $(document).delegate('#find_player', 'click', function (e) {
+        e.preventDefault();
         //delete dataTable;
         $('#table').hide();
         $('#game-data').hide();
         var dataTable = [];
-
+        pgnData.length = 0; //clear the array for the next search
         var name_player = $('#name_player').val().toString().replace(",", "");
         var surname_player = $('#surname_player').val().toString().replace(",", "");
         var surname2_player = $('#surname2_player').val().toString().replace(",", "");
+
+        if (name_player == '' && surname_player == '' && surname2_player == '') {
+            alert("Has d'omplir algún nom");
+            $("#find_player").text('Buscar jugador');
+            $('#find_player').prop('disabled', false);
+            return false;
+        }
+
         var parametros = {
             "name_player": name_player,
             "surname_player": surname_player,
@@ -183,7 +190,7 @@ $(document).ready(function () {
             success: function (p) {
                 console.log(p);
                 if (p.toString() != "not_found") {
-                    delete dataTable;
+                    //delete dataTable;
                     for (var i = 0; i < p.length; i++) {
                         pgnData.push(p[i]);
                         //console.log('primer for ' + i);
@@ -209,16 +216,24 @@ $(document).ready(function () {
                     $('#find_player').prop('disabled', false);
                     var table = $('#myTable').DataTable({
                         data: dataTable,
-                        order: [[0, 'desc']],
-                        "columns": [
-                            {"data": "tournament"},
-                            {"data": "player"},
-                            {"data": "btn"}
+                        destroy: true,
+                        order: [
+                            [0, 'desc']
+                        ],
+                        "columns": [{
+                                "data": "tournament"
+                            },
+                            {
+                                "data": "player"
+                            },
+                            {
+                                "data": "btn"
+                            }
                         ],
                         pageLength: 10
                     });
                     $('#table').show();
-                    table.destroy();
+                    //table.destroy();
 
 
                 } else {
@@ -241,11 +256,10 @@ $(document).ready(function () {
     });
 
     $(document).delegate('.move', 'click', function () {
-        goToMove($(this).val());
+        goToMove($(this).attr('data-value'));
     });
     //only need the headers here, issue raised on github
     //read all the games to populate the select
-    //console.log('-------------' + pgnData);
 
 
     //set up the board

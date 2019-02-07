@@ -63,13 +63,22 @@ class DatabaseGames extends MysqlDatabaseConnection
             $stmt->bindParam(3, $this->surname2_player, PDO::PARAM_STR);
             $stmt->execute();
             $row = $stmt->fetchAll();
+        } else if (! empty($surname_player) && ! empty($surname2_player) ) {
+            $query = "SELECT * FROM (SELECT * FROM `games` WHERE pgn LIKE ?) AS surname  WHERE surname.pgn LIKE ?";
+            $stmt = $this->database_handle->prepare($query);
+            $stmt->bindParam(1, $this->surname_player, PDO::PARAM_STR);
+            $stmt->bindParam(2, $this->surname2_player, PDO::PARAM_STR);
+            $stmt->execute();
+            $row = $stmt->fetchAll();
+        } else {
+            $query = "SELECT * FROM `games` WHERE pgn LIKE ? OR pgn LIKE ? OR pgn LIKE ?";
+            $stmt = $this->database_handle->prepare($query);
+            $stmt->bindParam(1, $this->surname_player, PDO::PARAM_STR);
+            $stmt->bindParam(2, $this->name_player, PDO::PARAM_STR);
+            $stmt->bindParam(3, $this->surname2_player, PDO::PARAM_STR);
+            $stmt->execute();
+            $row = $stmt->fetchAll();
         }
-        
-        
-        
-        
-        
-        
         
         return $row;
         
