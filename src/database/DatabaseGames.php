@@ -1,8 +1,6 @@
 <?php
 
 /**
- * Description of Users
- *
  * @author mmorente
  */
 class DatabaseGames extends MysqlDatabaseConnection
@@ -24,10 +22,10 @@ class DatabaseGames extends MysqlDatabaseConnection
             //$str = str_replace(array("\r\n", "\n", "\r"), '', $this->games[$index]);
             $stmt->bindParam(1, $this->games[$index]);
             if (!$stmt->execute()) {
-                exit("Error insert");
+                return false;
             }
         }
-        echo 'Imoprt Successful <br/>';
+        return true;
     }
     
     public function getGamesToDatabase()
@@ -71,7 +69,6 @@ class DatabaseGames extends MysqlDatabaseConnection
             $stmt->execute();
             $row = $stmt->fetchAll();
         } else {
-
             $array = array(
                 $name_player => $this->name_player, 
                 $surname_player => $this->surname_player, 
@@ -82,16 +79,13 @@ class DatabaseGames extends MysqlDatabaseConnection
                 if (! empty($key)) {
                     $query = "SELECT * FROM `games` WHERE pgn LIKE ?";
                     $stmt = $this->database_handle->prepare($query);
-                    $stmt->bindParam(1, $this->surname_player, PDO::PARAM_STR);
+                    $stmt->bindParam(1, $value, PDO::PARAM_STR);
                     $stmt->execute();
                     $row = $stmt->fetchAll();
                 }
             }
-            
         }
-        
         return $row;
-        
     }
 
 }

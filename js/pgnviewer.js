@@ -1,18 +1,27 @@
 $(document).ready(function () {
     var pgnData = [];
-    var pgn_database = [];
-
-
 
     //Write the game to the DOM
     function writeGameText(g) {
 
         //remove the header to get the moves
         var h = g.header();
-        var gameHeaderText = '<h4>' + h.White + ' (' + h.WhiteElo + ') - ' + h.Black + ' (' + h.BlackElo + ')</h4>';
+
+        if (h.WhiteElo == undefined) {
+            h.WhiteElo = "";
+        } else {
+            h.WhiteElo = " (" + h.WhiteElo + ")";
+        }
+
+        if (h.BlackElo == undefined) {
+            h.BlackElo = "";
+        } else {
+            h.BlackElo = " (" + h.BlackElo + ")";
+        }
+
+        var gameHeaderText = '<h4>' + h.White + h.WhiteElo + ' - ' + h.Black + h.BlackElo + '</h4>';
         gameHeaderText += '<h5>' + h.Event + ', ' + h.Site + ' ' + h.EventDate + '</h5>';
         var pgn = g.pgn();
-
 
         var gameMoves = pgn.replace(/\[(.*?)\]/gm, '').replace(h.Result, '').trim();
         //format the moves so each one is individually identified, so it can be highlighted
@@ -89,18 +98,15 @@ $(document).ready(function () {
     function loadGame(i) {
         game = new Chess();
 
-        //console.log(pgnData[i]);
         game.load_pgn(pgnData[i].join('\n'), {
             newline_char: '\n'
         });
-        //console.log(pgnData[i].join('\n'));
-        /*game.load_pgn(pgnData[i], {
-         newline_char: '\n'
-         });*/
+
         writeGameText(game);
         gameHistory = game.history({
             verbose: true
         });
+
         goToMove(-1);
         currentGame = i;
     }
@@ -149,13 +155,10 @@ $(document).ready(function () {
             return false;
         }
     });
-    //start doing stuff
 
-
+    // find players into database
     $(document).delegate('#find_player', 'click', function (e) {
-        
         e.preventDefault();
-        //delete dataTable;
         board = new ChessBoard('board', cfg);
         $(window).resize(board.resize);
         $('#table').hide();
@@ -184,7 +187,7 @@ $(document).ready(function () {
             url: "src/ajaxrequest/get_games_player.php",
             type: "POST",
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log('Error: ' + errorThrown.toString() + ' ' + textStatus.toString() + ' ' + jqXHR.toString());
+                console.log('Error: ' + JSON.parse(errorThrown) + ' ' + JSON.parse(textStatus) + ' ' + JSON.parse(jqXHR));
                 $("#find_player").text('Buscar jugador');
                 $('#find_player').prop('disabled', false);
             },
@@ -193,43 +196,55 @@ $(document).ready(function () {
                 $('#find_player').prop('disabled', true);
             },
             success: function (p) {
-                console.log(p);
                 if (p.toString() != "not_found") {
-                    //delete dataTable;
                     for (var i = 0; i < p.length; i++) {
+
                         pgnData.push(p[i]);
-                        //console.log('primer for ' + i);
                         var g = new Chess();
-                        //console.log(p[i].join('\n'));
                         g.load_pgn(p[i].join('\n'), {
                             newline_char: '\n'
                         });
+
                         var h = g.header();
-
-                        /*$('#gameSelect').append($('<option></option>')
-                         .attr('value', i)
-                         .text(h.White + ' - ' + h.Black + ', ' + h.Date));*/
-
+                        var date = h.Date;
+                        var year = date.split(".", 1);
                         dataTable.push({
                             tournament: h.Event,
-                            player: h.White + ' - ' + h.Black + ', ' + h.Date,
-                            btn: '<button class="edit btn btn-default show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
+                            year: year,
+                            white: h.White,
+                            black: h.Black,
+                            result: h.Result,
+                            eco: h.ECO,
+                            btn: '<button class="edit btn btn-info show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
                         });
 
                     }
                     $("#find_player").text('Buscar jugador');
                     $('#find_player').prop('disabled', false);
-                    var table = $('#myTable').DataTable({
+                    $('#myTable').DataTable({
                         data: dataTable,
                         destroy: true,
                         order: [
                             [0, 'desc']
                         ],
-                        "columns": [{
+                        "columns": [
+                            {
                                 "data": "tournament"
                             },
                             {
-                                "data": "player"
+                                "data": "year"
+                            },
+                            {
+                                "data": "white"
+                            },
+                            {
+                                "data": "black"
+                            },
+                            {
+                                "data": "result"
+                            },
+                            {
+                                "data": "eco"
                             },
                             {
                                 "data": "btn"
@@ -238,34 +253,25 @@ $(document).ready(function () {
                         pageLength: 10
                     });
                     $('#table').show();
-                    //table.destroy();
-
-
                 } else {
                     alert("No s'ha trobat cap partida amb aquest criteri de búsqueda ");
                     $("#find_player").text('Buscar jugador');
                     $('#find_player').prop('disabled', false);
                 }
-
             }
-
         });
-
-
-
     });
 
     $(document).delegate('.show-pgn', 'click', function () {
-        loadGame($(this).val());
+        var val = $(this).val();
+        loadGame(val);
         $('#game-data').show();
     });
 
     $(document).delegate('.move', 'click', function () {
-        goToMove($(this).attr('data-value'));
+        var val = $(this).attr('data-value');
+        goToMove(val);
     });
-    //only need the headers here, issue raised on github
-    //read all the games to populate the select
-
 
     //set up the board
     var cfg = {
@@ -276,11 +282,4 @@ $(document).ready(function () {
     };
     board = new ChessBoard('board', cfg);
     $(window).resize(board.resize);
-
-    //load the first game
-    /*if (pgnData.length > 0) {
-     loadGame(0);
-     goToMove(gameHistory.length - 1);
-     }*/
-
 });
