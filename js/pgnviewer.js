@@ -112,11 +112,11 @@ $(document).ready(function () {
     }
 
     var board, //the chessboard
-        game, //the current  game
-        games, //array of all loaded games
-        gameHistory,
-        currentPly,
-        currentGame;
+            game, //the current  game
+            games, //array of all loaded games
+            gameHistory,
+            currentPly,
+            currentGame;
     //key bindings
     $(document).keydown(function (e) {
         if (e.keyCode == 39) { //right arrow
@@ -208,6 +208,11 @@ $(document).ready(function () {
                         var h = g.header();
                         var date = h.Date;
                         var year = date.split(".", 1);
+                        
+                        if (h.ECO == null || h.ECO == undefined) {
+                            h.ECO = '-';
+                        }
+                        
                         dataTable.push({
                             tournament: h.Event,
                             year: year,
