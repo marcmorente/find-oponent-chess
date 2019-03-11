@@ -165,6 +165,7 @@ $(document).ready(function () {
         $('#game-data').hide();
         var dataTable = [];
         pgnData.length = 0; //clear the array for the next search
+        
         var name_player = $('#name_player').val().toString().replace(",", "");
         var surname_player = $('#surname_player').val().toString().replace(",", "");
         var surname2_player = $('#surname2_player').val().toString().replace(",", "");
@@ -181,6 +182,7 @@ $(document).ready(function () {
             "surname_player": surname_player,
             "surname2_player": surname2_player
         };
+        
         $.ajax({
             data: parametros,
             dataType: 'json',
