@@ -74,32 +74,44 @@ class DatabaseGames extends MysqlDatabaseConnection
         $this->surname2_player = "%$surname2_player%";
 
         if (!empty($name_player) && !empty($surname_player)) {
-            $query = "SELECT * FROM (SELECT * FROM `games` WHERE white_player LIKE ? OR black_player LIKE ?) AS surname  "
-                    . "WHERE surname.white_player LIKE ? OR surname.black_player LIKE ?";
+            $query = "SELECT pgn FROM `games` WHERE "
+                    . "(white_player LIKE ? AND white_player LIKE ?) "
+                    . "OR "
+                    . "(black_player LIKE ? AND black_player LIKE ?)";
 
             $stmt = $this->database_handle->prepare($query);
             $stmt->bindParam(1, $this->name_player, PDO::PARAM_STR);
-            $stmt->bindParam(2, $this->name_player, PDO::PARAM_STR);
-            $stmt->bindParam(3, $this->surname_player, PDO::PARAM_STR);
+            $stmt->bindParam(2, $this->surname_player, PDO::PARAM_STR);
+            $stmt->bindParam(3, $this->name_player, PDO::PARAM_STR);
             $stmt->bindParam(4, $this->surname_player, PDO::PARAM_STR);
             $stmt->execute();
             $row = $stmt->fetchAll();
         } else if (!empty($name_player) && !empty($surname_player) && !empty($surname2_player)) {
-            $search = "%$surname_player $surname2_player $name_player%";
-            $query = "SELECT * FROM `games` WHERE white_player LIKE ? OR black_player LIKE ? ";
+            $query = "SELECT pgn FROM `games` WHERE "
+                    . "(white_player LIKE ? AND white_player LIKE ? AND white_player LIKE ?) "
+                    . "OR "
+                    . "(black_player LIKE ? AND black_player LIKE ? AND black_player LIKE ?)";
 
             $stmt = $this->database_handle->prepare($query);
-            $stmt->bindParam(1, $search, PDO::PARAM_STR);
-            $stmt->bindParam(2, $search, PDO::PARAM_STR);
+            $stmt->bindParam(1, $this->name_player, PDO::PARAM_STR);
+            $stmt->bindParam(2, $this->surname_player, PDO::PARAM_STR);
+            $stmt->bindParam(3, $this->surname2_player, PDO::PARAM_STR);
+            $stmt->bindParam(4, $this->name_player, PDO::PARAM_STR);
+            $stmt->bindParam(5, $this->surname_player, PDO::PARAM_STR);
+            $stmt->bindParam(6, $this->surname2_player, PDO::PARAM_STR);
             $stmt->execute();
             $row = $stmt->fetchAll();
         } else if (!empty($surname_player) && !empty($surname2_player)) {
-            $search = "%$surname_player $surname2_player%";
-            $query = "SELECT * FROM `games` WHERE white_player LIKE ? OR black_player LIKE ? ";
+            $query = "SELECT pgn FROM `games` WHERE "
+                    . "(white_player LIKE ? AND white_player LIKE ?) "
+                    . "OR "
+                    . "(black_player LIKE ? AND black_player LIKE ?)";
 
             $stmt = $this->database_handle->prepare($query);
-            $stmt->bindParam(1, $search, PDO::PARAM_STR);
-            $stmt->bindParam(2, $search, PDO::PARAM_STR);
+            $stmt->bindParam(1, $this->surname_player, PDO::PARAM_STR);
+            $stmt->bindParam(2, $this->surname2_player, PDO::PARAM_STR);
+            $stmt->bindParam(3, $this->surname_player, PDO::PARAM_STR);
+            $stmt->bindParam(4, $this->surname2_player, PDO::PARAM_STR);
             $stmt->execute();
             $row = $stmt->fetchAll();
         } else {
@@ -112,7 +124,7 @@ class DatabaseGames extends MysqlDatabaseConnection
             foreach ($array as $key => $value) {
                 if (!empty($key)) {
                     $search = "%$surname_player $surname2_player%";
-                    $query = "SELECT * FROM `games` WHERE white_player LIKE ? OR black_player LIKE ? ";
+                    $query = "SELECT pgn FROM `games` WHERE white_player LIKE ? OR black_player LIKE ? ";
 
                     $stmt = $this->database_handle->prepare($query);
                     $stmt->bindParam(1, $value, PDO::PARAM_STR);

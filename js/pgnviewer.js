@@ -1,5 +1,13 @@
 $(document).ready(function () {
     var pgnData = [];
+    
+    $(document).ajaxStart(function () {
+        $("#cover").show();
+    });
+    
+    $(document).ajaxComplete(function () {
+        $("#cover").hide();
+    });
 
     //Write the game to the DOM
     function writeGameText(g) {
@@ -165,7 +173,7 @@ $(document).ready(function () {
         $('#game-data').hide();
         var dataTable = [];
         pgnData.length = 0; //clear the array for the next search
-        
+
         var name_player = $('#name_player').val().toString().replace(",", "");
         var surname_player = $('#surname_player').val().toString().replace(",", "");
         var surname2_player = $('#surname2_player').val().toString().replace(",", "");
@@ -182,7 +190,7 @@ $(document).ready(function () {
             "surname_player": surname_player,
             "surname2_player": surname2_player
         };
-        
+
         $.ajax({
             data: parametros,
             dataType: 'json',
@@ -208,25 +216,25 @@ $(document).ready(function () {
                         g.load_pgn(p[i].join('\n'), {
                             newline_char: '\n'
                         });
-                        
+
                         var h = g.header();
-                            
+
                         if (typeof h.Date === 'undefined') {
                             h.Date = "-";
                         }
-                        
+
                         if (typeof h.ECO === 'undefined') {
                             h.ECO = '-';
                         }
-                        
+
                         if (typeof h.Event === 'undefined') {
                             h.Event = '-';
                         }
-                        
+
                         if (typeof h.Result === 'undefined') {
                             h.Result = '-';
                         }
-                        
+
                         if (typeof h.White !== 'undefined' && typeof h.Black !== 'undefined') {
                             dataTable.push({
                                 tournament: h.Event,
@@ -237,9 +245,9 @@ $(document).ready(function () {
                                 eco: h.ECO,
                                 btn: '<button class="edit btn btn-info show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
                             });
-                            
+
                         }
-                        
+
 
                     }
                     $("#find_player").text('Buscar jugador');
