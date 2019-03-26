@@ -163,6 +163,11 @@ $(document).ready(function () {
             return false;
         }
     });
+    
+    function enableButton() {
+        $("#find_player").text('Buscar jugador');
+        $('#find_player').prop('disabled', false);
+    }
 
     // find players into database
     $(document).delegate('#find_player', 'click', function (e) {
@@ -180,8 +185,25 @@ $(document).ready(function () {
 
         if (name_player == '' && surname_player == '' && surname2_player == '') {
             alert("Has d'omplir algun nom");
-            $("#find_player").text('Buscar jugador');
-            $('#find_player').prop('disabled', false);
+            enableButton();
+            return false;
+        }
+        
+        if (name_player.length < 2 && surname_player == '' && surname2_player == '') {
+            alert("Has de posar un nom amb més d'una lletra");
+            enableButton();
+            return false;
+        }
+        
+        if (name_player == '' && surname_player.length < 2 && surname2_player == '') {
+            alert("Has de posar un cognom1 amb més d'una lletra");
+            enableButton();
+            return false;
+        }
+        
+        if (name_player.length == '' && surname_player == '' && surname2_player.length < 2) {
+            alert("Has de posar un cognom2 amb més d'una lletra");
+            enableButton();
             return false;
         }
 
@@ -198,8 +220,7 @@ $(document).ready(function () {
             type: "POST",
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log('Error: ' + JSON.parse(errorThrown) + ' ' + JSON.parse(textStatus) + ' ' + JSON.parse(jqXHR));
-                $("#find_player").text('Buscar jugador');
-                $('#find_player').prop('disabled', false);
+                enableButton();
             },
             beforeSend: function (xhr) {
                 $("#find_player").text('Buscant partides...');
@@ -250,8 +271,7 @@ $(document).ready(function () {
 
 
                     }
-                    $("#find_player").text('Buscar jugador');
-                    $('#find_player').prop('disabled', false);
+                    enableButton();
                     $('#myTable').DataTable({
                         data: dataTable,
                         destroy: true,
@@ -286,8 +306,7 @@ $(document).ready(function () {
                     $('#table').show();
                 } else {
                     alert("No s'ha trobat cap partida amb aquest criteri de búsqueda ");
-                    $("#find_player").text('Buscar jugador');
-                    $('#find_player').prop('disabled', false);
+                    enableButton();
                 }
             }
         });
