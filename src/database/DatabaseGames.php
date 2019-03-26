@@ -123,7 +123,6 @@ class DatabaseGames extends MysqlDatabaseConnection
 
             foreach ($array as $key => $value) {
                 if (!empty($key)) {
-                    $search = "%$surname_player $surname2_player%";
                     $query = "SELECT pgn FROM `games` WHERE white_player LIKE ? OR black_player LIKE ? ";
 
                     $stmt = $this->database_handle->prepare($query);
