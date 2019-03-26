@@ -66,7 +66,7 @@ class PgnParser
 
         $c = preg_replace('/"\]\s{0,10}\[/s', "]\n[", $c);
         $c = preg_replace('/"\]\s{0,10}([\.0-9]|{)/s', "\"]\n\n$1", $c);
-
+        
         $c = preg_replace("/{\s{0,6}\[%emt[^\}]*?\}/", "", $c);
 
         $c = preg_replace("/\\$[0-9]+/s", "", $c);
@@ -76,12 +76,15 @@ class PgnParser
         $c = preg_replace("/\t/s", "", $c);
         $c = preg_replace("/\]\s+\[/s", "]\n[", $c);
         $c = str_replace(" [", "[", $c);
-        $c = preg_replace("/([^\]])(\n+)\[/si", "$1\n\n[", $c);
+        
+        //$c = preg_replace("/([^\]])(\n+)\[/si", "$1\n\n[", $c);
+        
+        
         $c = preg_replace("/\n{3,}/s", "\n\n", $c);
         $c = str_replace("-SB-", "[", $c);
         $c = str_replace("0-0-0", "O-O-O", $c);
         $c = str_replace("0-0", "O-O", $c);
-
+        
 
         return $c;
     }

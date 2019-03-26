@@ -203,27 +203,43 @@ $(document).ready(function () {
 
                         pgnData.push(p[i]);
                         var g = new Chess();
+                        var year;
+                        var date
                         g.load_pgn(p[i].join('\n'), {
                             newline_char: '\n'
                         });
-
-                        var h = g.header();
-                        var date = h.Date;
-                        var year = date.split(".", 1);
                         
-                        if (h.ECO == null || h.ECO == undefined) {
+                        var h = g.header();
+                            
+                        if (typeof h.Date === 'undefined') {
+                            h.Date = "-";
+                        }
+                        
+                        if (typeof h.ECO === 'undefined') {
                             h.ECO = '-';
                         }
                         
-                        dataTable.push({
-                            tournament: h.Event,
-                            year: year,
-                            white: h.White,
-                            black: h.Black,
-                            result: h.Result,
-                            eco: h.ECO,
-                            btn: '<button class="edit btn btn-info show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
-                        });
+                        if (typeof h.Event === 'undefined') {
+                            h.Event = '-';
+                        }
+                        
+                        if (typeof h.Result === 'undefined') {
+                            h.Result = '-';
+                        }
+                        
+                        if (typeof h.White !== 'undefined' && typeof h.Black !== 'undefined') {
+                            dataTable.push({
+                                tournament: h.Event,
+                                year: h.Date,
+                                white: h.White,
+                                black: h.Black,
+                                result: h.Result,
+                                eco: h.ECO,
+                                btn: '<button class="edit btn btn-info show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
+                            });
+                            
+                        }
+                        
 
                     }
                     $("#find_player").text('Buscar jugador');

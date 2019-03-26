@@ -8,6 +8,7 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'jsontopgnparser' => '/pgnparser/JsonToPgnParser.php',
+                'pgngame' => '/pgnparser/PgnGame.php',
                 'chess_json' => '/pgnparser/CHESS_JSON.php',
                 'board0x88config' => '/pgnparser/Board0x88Config.php',
                 'dgtgameparser' => '/pgnparser/DGTGameParser.php',
