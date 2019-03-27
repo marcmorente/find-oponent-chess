@@ -26,17 +26,17 @@ class PgnGame
         foreach (preg_split("/((\r?\n)|(\r\n?))/", $this->pgn) as $line) {
 
             if (strpos($line, 'White "') !== false) {
-                $white = str_replace("White ", "", preg_replace('/[^A-Za-z0-9\-\ ]/', '', $line));
+                $white = str_replace('White ', '', preg_replace('/[^A-Za-z0-9\-\ ]/', '', $line));
                 $this->setWhite($white);
             }
 
             if (strpos($line, 'Black "') !== false) {
-                $black = str_replace("Black ", "", preg_replace('/[^A-Za-z0-9\-\ ]/', '', $line));
+                $black = str_replace('Black ', '', preg_replace('/[^A-Za-z0-9\-\ ]/', '', $line));
                 $this->setBlack($black);
             }
 
             if (strpos($line, 'Event "') !== false) {
-                $event = str_replace("Event ", "", preg_replace('/[^A-Za-z0-9\-\ ]/', '', $line));
+                $event = str_replace('Event ', '', preg_replace('/[^A-Za-z0-9\-\ ]/', '', $line));
                 $this->setEvent($event);
             }
 
@@ -59,12 +59,12 @@ class PgnGame
 
     private function parseMoves()
     {
-        $moves = "";
+        $moves = '';
         $parser = new PgnGameParser($this->pgn);
         $pgnParsedData = $parser->getParsedData();
-        foreach ($pgnParsedData["moves"] as $value) {
-            if (isset($value["m"])) {
-                $moves .= $value["m"];
+        foreach ($pgnParsedData['moves'] as $value) {
+            if (isset($value['m'])) {
+                $moves .= $value['m'];
             }
         }
 

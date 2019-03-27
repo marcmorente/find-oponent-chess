@@ -6,15 +6,19 @@ require_once(__DIR__ . './autoload.php');
 
 $dir = '../pgn';
 $files = scandir($dir);
-header('Content-Type: text/php');
-foreach ($files as $file) {
-    if ($file != '.' && $file != '..') {
-        $parser = new PgnParser("$dir/$file");
-        $pgn = $parser->getUnparsedGames();
-        $DatabaseGames = new DatabaseGames();
-        if ($DatabaseGames->setPgnToDatabase($pgn)) {
-            echo '\nImport Successful';
-            rename("$dir/$file", "../data/$file");
+//header('Content-Type: text/php');
+if (count($files) > 2) {
+    foreach ($files as $file) {
+        if ($file != '.' && $file != '..') {
+            $parser = new PgnParser("$dir/$file");
+            $pgn = $parser->getUnparsedGames();
+            $DatabaseGames = new DatabaseGames();
+            if ($DatabaseGames->setPgnToDatabase($pgn)) {
+                echo "Partides de l'arxiu <strong>$file</strong>, s'han afegit a la base de dades correctament.<br>";
+                rename("$dir/$file", "../data/$file");
+            }
         }
     }
+} else {
+    echo "<strong>No hi ha cap arxiu per afegir a la base de dades.</strong>";
 }
