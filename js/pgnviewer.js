@@ -2,11 +2,19 @@ $(document).ready(function () {
     var pgnData = [];
     
     $(document).ajaxStart(function () {
-        $("#cover").show();
+        var name_player = $('#name_player').val().toString().replace(",", "");
+        var surname_player = $('#surname_player').val().toString().replace(",", "");
+        var surname2_player = $('#surname2_player').val().toString().replace(",", "");
+        $(".loader-txt").html("<p>Buscan partides de <strong>"+ name_player + " " + surname_player + " " + surname2_player +"</strong><br><br><small>Esperi si us plau.</small></p>")
+        $("#loadMe").modal({
+            backdrop: "static", //remove ability to close modal with click
+            keyboard: false, //remove option to close with keyboard
+            show: true //Display loader!
+        });
     });
     
     $(document).ajaxComplete(function () {
-        $("#cover").hide();
+        $("#loadMe").modal("hide");
     });
 
     //Write the game to the DOM
@@ -219,8 +227,9 @@ $(document).ready(function () {
             url: "src/ajaxrequest/get_games_player.php",
             type: "POST",
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log('Error: ' + JSON.parse(errorThrown) + ' ' + JSON.parse(textStatus) + ' ' + JSON.parse(jqXHR));
                 enableButton();
+                console.log('Error: ' + JSON.parse(errorThrown) + ' ' + JSON.parse(textStatus) + ' ' + JSON.parse(jqXHR));
+                
             },
             beforeSend: function (xhr) {
                 $("#find_player").text('Buscant partides...');
