@@ -5,7 +5,7 @@ $(document).ready(function () {
         var name_player = $('#name_player').val().toString().replace(",", "");
         var surname_player = $('#surname_player').val().toString().replace(",", "");
         var surname2_player = $('#surname2_player').val().toString().replace(",", "");
-        $(".loader-txt").html("<p>Buscan partides de <strong>"+ name_player + " " + surname_player + " " + surname2_player +"</strong><br><br><small>Esperi si us plau.</small></p>")
+        $(".loader-txt").html("<p>Buscant partides de <strong>"+ name_player + " " + surname_player + " " + surname2_player +"</strong><br><br><small>Esperi si us plau.</small></p>")
         $("#loadMe").modal({
             backdrop: "static", //remove ability to close modal with click
             keyboard: false, //remove option to close with keyboard
@@ -173,7 +173,6 @@ $(document).ready(function () {
     });
     
     function enableButton() {
-        $("#find_player").text('Buscar jugador');
         $('#find_player').prop('disabled', false);
     }
 
@@ -231,8 +230,7 @@ $(document).ready(function () {
                 console.log('Error: ' + JSON.parse(errorThrown) + ' ' + JSON.parse(textStatus) + ' ' + JSON.parse(jqXHR));
                 
             },
-            beforeSend: function (xhr) {
-                $("#find_player").text('Buscant partides...');
+            beforeSend: function () {
                 $('#find_player').prop('disabled', true);
             },
             success: function (p) {
