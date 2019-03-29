@@ -18,20 +18,20 @@ class DatabaseGames extends MysqlDatabaseConnection
     {
         $this->games = $games;
         $array_moves_database = $this->getMovesToDatabase();
-        
+
         for ($index = 0; $index < count($this->games); $index++) {
             $game = $this->games[$index];
-            
+
             $pgn_game = new PgnGame($game);
             $white = $pgn_game->getWhite();
             $black = $pgn_game->getBlack();
-            
+
             //Add moves into array key for eliminate duplicate games
             $this->array_moves_pgn[$pgn_game->getMoves()] = true;
-            
+
             //Get moves from array key
             $moves = key($this->array_moves_pgn);
-            
+
             //SELECT pgn, moves, COUNT(*) c FROM games GROUP BY moves HAVING c > 1 
             //58010
             if ($moves != '' && !isset($array_moves_database[$moves])) {
@@ -48,15 +48,15 @@ class DatabaseGames extends MysqlDatabaseConnection
                 }
             }
         }
-        
+
         return true;
     }
-    
+
     public function getMovesToDatabase()
     {
         $array_moves = [];
         $query = 'SELECT moves FROM games';
-        
+
         $stmt = $this->database_handle->prepare($query);
         $stmt->execute();
         $row = $stmt->fetchAll();
@@ -66,7 +66,7 @@ class DatabaseGames extends MysqlDatabaseConnection
                 $array_moves[] = $value['moves'];
             }
         }
-        
+
         $array_flip = array_flip($array_moves);
 
         return $array_flip;
@@ -85,11 +85,12 @@ class DatabaseGames extends MysqlDatabaseConnection
 
     public function getGamesToDatabaseByName($name_player, $surname_player, $surname2_player)
     {
-        $this->name_player = '%'.$name_player.'%';
-        $this->surname_player = '%'.$surname_player.'%';
-        $this->surname2_player = '%'.$surname2_player.'%';
+        $this->name_player = '%' . $name_player . '%';
+        $this->surname_player = '%' . $surname_player . '%';
+        $this->surname2_player = '%' . $surname2_player . '%';
 
         if (!empty($name_player) && !empty($surname_player)) {
+            
             $query = 'SELECT pgn FROM `games` WHERE '
                     . '(white_player LIKE ? AND white_player LIKE ?) '
                     . 'OR '
@@ -102,7 +103,8 @@ class DatabaseGames extends MysqlDatabaseConnection
             $stmt->bindParam(4, $this->surname_player, PDO::PARAM_STR);
             $stmt->execute();
             $row = $stmt->fetchAll();
-        } else if (!empty($name_player) && !empty($surname_player) && !empty($surname2_player)) {
+        } elseif (!empty($name_player) && !empty($surname_player) && !empty($surname2_player)) {
+            
             $query = 'SELECT pgn FROM `games` WHERE '
                     . '(white_player LIKE ? AND white_player LIKE ? AND white_player LIKE ?) '
                     . 'OR '
@@ -117,7 +119,8 @@ class DatabaseGames extends MysqlDatabaseConnection
             $stmt->bindParam(6, $this->surname2_player, PDO::PARAM_STR);
             $stmt->execute();
             $row = $stmt->fetchAll();
-        } else if (!empty($surname_player) && !empty($surname2_player)) {
+        } elseif (!empty($surname_player) && !empty($surname2_player)) {
+            
             $query = 'SELECT pgn FROM `games` WHERE '
                     . '(white_player LIKE ? AND white_player LIKE ?) '
                     . 'OR '
@@ -131,6 +134,7 @@ class DatabaseGames extends MysqlDatabaseConnection
             $stmt->execute();
             $row = $stmt->fetchAll();
         } else {
+            
             $array = array(
                 $name_player => $this->name_player,
                 $surname_player => $this->surname_player,
