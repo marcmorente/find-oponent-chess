@@ -275,12 +275,11 @@ $(document).ready(function () {
                             });
 
                         }
-
-
                     }
                     enableButton();
                     $('#myTable').DataTable({
                         data: dataTable,
+                        pageLength: 20,
                         destroy: true,
                         order: [
                             [0, 'desc']
@@ -307,8 +306,7 @@ $(document).ready(function () {
                             {
                                 "data": "btn"
                             }
-                        ],
-                        pageLength: 10
+                        ]
                     });
                     $('#table').show();
                 } else {
