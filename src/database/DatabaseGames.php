@@ -16,15 +16,15 @@ class DatabaseGames extends MysqlDatabaseConnection
 
     public function setPgnToDatabase($games)
     {
-        $this->games = $games;
+        $this->games          = $games;
         $array_moves_database = $this->getMovesToDatabase();
 
         for ($index = 0; $index < count($this->games); $index++) {
             $game = $this->games[$index];
 
             $pgn_game = new PgnGame($game);
-            $white = $pgn_game->getWhite();
-            $black = $pgn_game->getBlack();
+            $white    = $pgn_game->getWhite();
+            $black    = $pgn_game->getBlack();
 
             //Add moves into array key for eliminate duplicate games
             $this->array_moves_pgn[$pgn_game->getMoves()] = true;
@@ -55,11 +55,11 @@ class DatabaseGames extends MysqlDatabaseConnection
     public function getMovesToDatabase()
     {
         $array_moves = [];
-        $query = 'SELECT moves FROM games';
+        $query       = 'SELECT moves FROM games';
 
         $stmt = $this->database_handle->prepare($query);
         $stmt->execute();
-        $row = $stmt->fetchAll();
+        $row  = $stmt->fetchAll();
 
         foreach ($row as $value) {
             if (!empty($value['moves'])) {
@@ -78,19 +78,19 @@ class DatabaseGames extends MysqlDatabaseConnection
 
         $stmt = $this->database_handle->prepare($query);
         $stmt->execute();
-        $row = $stmt->fetchAll();
+        $row  = $stmt->fetchAll();
 
         return $row;
     }
 
     public function getGamesToDatabaseByName($name_player, $surname_player, $surname2_player)
     {
-        $this->name_player = '%' . $name_player . '%';
-        $this->surname_player = '%' . $surname_player . '%';
+        $this->name_player     = '%' . $name_player . '%';
+        $this->surname_player  = '%' . $surname_player . '%';
         $this->surname2_player = '%' . $surname2_player . '%';
 
         if (!empty($name_player) && !empty($surname_player)) {
-            
+
             $query = 'SELECT pgn FROM `games` WHERE '
                     . '(white_player LIKE ? AND white_player LIKE ?) '
                     . 'OR '
@@ -102,9 +102,9 @@ class DatabaseGames extends MysqlDatabaseConnection
             $stmt->bindParam(3, $this->name_player, PDO::PARAM_STR);
             $stmt->bindParam(4, $this->surname_player, PDO::PARAM_STR);
             $stmt->execute();
-            $row = $stmt->fetchAll();
+            $row  = $stmt->fetchAll();
         } elseif (!empty($name_player) && !empty($surname_player) && !empty($surname2_player)) {
-            
+
             $query = 'SELECT pgn FROM `games` WHERE '
                     . '(white_player LIKE ? AND white_player LIKE ? AND white_player LIKE ?) '
                     . 'OR '
@@ -118,9 +118,9 @@ class DatabaseGames extends MysqlDatabaseConnection
             $stmt->bindParam(5, $this->surname_player, PDO::PARAM_STR);
             $stmt->bindParam(6, $this->surname2_player, PDO::PARAM_STR);
             $stmt->execute();
-            $row = $stmt->fetchAll();
+            $row  = $stmt->fetchAll();
         } elseif (!empty($surname_player) && !empty($surname2_player)) {
-            
+
             $query = 'SELECT pgn FROM `games` WHERE '
                     . '(white_player LIKE ? AND white_player LIKE ?) '
                     . 'OR '
@@ -132,12 +132,12 @@ class DatabaseGames extends MysqlDatabaseConnection
             $stmt->bindParam(3, $this->surname_player, PDO::PARAM_STR);
             $stmt->bindParam(4, $this->surname2_player, PDO::PARAM_STR);
             $stmt->execute();
-            $row = $stmt->fetchAll();
+            $row  = $stmt->fetchAll();
         } else {
-            
+
             $array = array(
-                $name_player => $this->name_player,
-                $surname_player => $this->surname_player,
+                $name_player     => $this->name_player,
+                $surname_player  => $this->surname_player,
                 $surname2_player => $this->surname2_player
             );
 
@@ -149,7 +149,7 @@ class DatabaseGames extends MysqlDatabaseConnection
                     $stmt->bindParam(1, $value, PDO::PARAM_STR);
                     $stmt->bindParam(2, $value, PDO::PARAM_STR);
                     $stmt->execute();
-                    $row = $stmt->fetchAll();
+                    $row  = $stmt->fetchAll();
                 }
             }
         }

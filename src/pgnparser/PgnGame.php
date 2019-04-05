@@ -59,8 +59,8 @@ class PgnGame
 
     private function parseMoves()
     {
-        $moves = '';
-        $parser = new PgnGameParser($this->pgn);
+        $moves         = '';
+        $parser        = new PgnGameParser($this->pgn);
         $pgnParsedData = $parser->getParsedData();
         foreach ($pgnParsedData['moves'] as $value) {
             if (isset($value['m'])) {
