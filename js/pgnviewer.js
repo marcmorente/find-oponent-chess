@@ -239,6 +239,7 @@ $(document).ready(function () {
             type: "POST",
             error: function (jqXHR, textStatus, errorThrown) {
                 enableButton();
+                $("#loadMe").modal("hide");
                 console.log('Error: ' + JSON.parse(errorThrown) + ' ' + JSON.parse(textStatus) + ' ' + JSON.parse(jqXHR));
                 
             },
@@ -283,7 +284,7 @@ $(document).ready(function () {
                                 black: h.Black,
                                 result: h.Result,
                                 eco: h.ECO,
-                                btn: '<button class="edit btn btn-success show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
+                                btn: '<button class="edit btn btn-success show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye fa-lg"></i></button>'
                             });
 
                         }
@@ -291,7 +292,7 @@ $(document).ready(function () {
                     enableButton();
                     $('#myTable').DataTable({
                         data: dataTable,
-                        pageLength: 20,
+                        pageLength: 15,
                         destroy: true,
                         order: [
                             [0, 'desc']
