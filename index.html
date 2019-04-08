@@ -3,6 +3,7 @@
 
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Buscador de partides</title>
         <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,400italic,700italic|Roboto+Slab:400,700' rel='stylesheet'
               type='text/css'>
@@ -40,7 +41,7 @@
                         <button type="button" class="btn btn-default" id="btnPrevious"><i class="fa fa-step-backward fa-lg"></i></button>
                         <button type="button" class="btn btn-default" id="btnNext"><i class="fa fa-step-forward fa-lg"></i></button>
                         <button type="button" class="btn btn-default" id="btnEnd"><i class="fa fa-fast-forward fa-lg"></i></button>
-                        <button type="button" class="btn btn-warning" id="currentFen" value=""><i class="fa fa-delicious fa-1x"></i>&nbsp;Analitzar posició</button>
+                        <button type="button" class="btn btn-warning" id="currentFen" value=""><i class="fa fa-delicious fa-1x" style="color: #333333;"></i>&nbsp;<strong style="color: #333333;">Analitzar posició</strong></button>
                     </div>
                 </div>
 
@@ -66,7 +67,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button class="btn btn-primary" id="find_player"><i class="fa fa-search fa-1x"></i>&nbsp;Buscar</button>
+                                <button class="btn btn-primary" id="find_player"><i class="fa fa-search fa-1x"></i>&nbsp;<strong>Buscar</strong></button>
                             </div>
                         </div>
                     </form>
@@ -76,7 +77,7 @@
                 </div>
             </div>
 
-            <div id="table" style="display: none;" class="row">
+            <div id="table" style="display: none;margin-top: 20px;" class="row">
                 <div class="col-lg-12">
                     <table id="myTable" class="table table-striped table-bordered" style="width:100%">
                         <thead>
