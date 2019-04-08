@@ -68,33 +68,39 @@ $(document).ready(function () {
         game.reset();
         currentPly = -1;
         board.position(game.fen());
+        $('#currentFen').val(game.fen());
     });
+
     $('#btnPrevious').on('click', function () {
         if (currentPly >= 0) {
             game.undo();
             currentPly--;
             board.position(game.fen());
+            $('#currentFen').val(game.fen());
         }
     });
+
     $('#btnNext').on('click', function () {
         if (currentPly < gameHistory.length - 1) {
             currentPly++;
             game.move(gameHistory[currentPly].san);
             board.position(game.fen());
+            $('#currentFen').val(game.fen());
         }
     });
+
     $('#btnEnd').on('click', function () {
         while (currentPly < gameHistory.length - 1) {
             currentPly++;
             game.move(gameHistory[currentPly].san);
         }
         board.position(game.fen());
+        $('#currentFen').val(game.fen());
     });
 
     //used for clickable moves in gametext
     //not used for buttons for efficiency
     function goToMove(ply) {
-        console.log("play --> " + ply);
         if (ply > gameHistory.length - 1)
             ply = gameHistory.length - 1;
         game.reset();
@@ -111,6 +117,13 @@ $(document).ready(function () {
         $('.gameMove' + currentPly).addClass('highlight');
     };
 
+    function getMovesAsFENs(chessObj) {
+        return chessObj.history().map(function(move) {
+            chessObj.move(move);
+            return chessObj.fen();
+        });
+    }
+
     function loadGame(i) {
         game = new Chess();
 
@@ -122,7 +135,6 @@ $(document).ready(function () {
         gameHistory = game.history({
             verbose: true
         });
-
         goToMove(-1);
         currentGame = i;
     }
@@ -271,7 +283,7 @@ $(document).ready(function () {
                                 black: h.Black,
                                 result: h.Result,
                                 eco: h.ECO,
-                                btn: '<button class="edit btn btn-info show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
+                                btn: '<button class="edit btn btn-success show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
                             });
 
                         }
@@ -322,6 +334,15 @@ $(document).ready(function () {
         loadGame(val);
         $('#game-data').show();
     });
+
+    $(document).delegate('#currentFen', 'click', function (e) {
+        //https://lichess.org/analysis/standard/rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR
+        var url = 'https://lichess.org/analysis/standard/' + $(this).val();
+        window.open(url, '_blank');
+
+    });
+
+
 
     $(document).delegate('.move', 'click', function () {
         var val = $(this).attr('data-value');
