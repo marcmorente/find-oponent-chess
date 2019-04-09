@@ -20,6 +20,7 @@ spl_autoload_register(
                 'pgngameparser' => '/pgnparser/PgnGameParser.php',
                 'mysqldatabaseconnection' => '/database/MysqlDatabaseConnection.php',
                 'databasegames' => '/database/DatabaseGames.php',
+                'forceutf8' => '/ForceUTF8/Encoding.php',
                 'pgnparser' => '/pgnparser/PgnParser.php'
             );
         }

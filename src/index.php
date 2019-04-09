@@ -1,14 +1,16 @@
 <?php
 
-ini_set('MAX_EXECUTION_TIME', '-1');
+//ini_set('MAX_EXECUTION_TIME', '-1');
 ini_set('memory_limit', '1G'); // or you could use 1G
-set_time_limit(0);
-require_once(__DIR__ . './autoload.php');
+//set_time_limit(0);
+require_once('./autoload.php');
+
 
 $dir   = '../pgn';
 $files = scandir($dir);
-//header('Content-Type: text/php');
-if (count($files) > 2) {
+
+header('Content-Type: text/php');
+/*if (count($files) > 2) {
     foreach ($files as $file) {
         if ($file != '.' && $file != '..') {
             $parser        = new PgnParser("$dir/$file");
@@ -22,4 +24,4 @@ if (count($files) > 2) {
     }
 } else {
     echo "<strong>No hi ha cap arxiu per afegir a la base de dades.</strong>";
-}
+}*/

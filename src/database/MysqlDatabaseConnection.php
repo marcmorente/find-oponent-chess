@@ -3,10 +3,15 @@
 abstract class MysqlDatabaseConnection
 {
 
-    const USERNAME = 'root';
+    /*const USERNAME = 'root';
     const PASSWORD = '';
     const HOST     = 'localhost';
-    const DB_NAME  = 'chess';
+    const DB_NAME  = 'chess';*/
+
+    const USERNAME = 'id9217686_marc';
+    const PASSWORD = 'Qwerty1234';
+    const HOST     = 'localhost';
+    const DB_NAME  = 'id9217686_chess';
 
     protected $database_handle;
 

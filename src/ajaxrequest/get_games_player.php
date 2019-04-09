@@ -1,8 +1,8 @@
 <?php
 
-ini_set('MAX_EXECUTION_TIME', '-1');
+//ini_set('MAX_EXECUTION_TIME', '-1');
 ini_set('memory_limit', '1G'); // or you could use 1G
-set_time_limit(0);
+//set_time_limit(0);
 require_once("../autoload.php");
 
 $DatabaseGames   = new DatabaseGames();

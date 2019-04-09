@@ -1,18 +1,18 @@
 $(document).ready(function () {
     var pgnData = [];
-    
+
     $(document).ajaxStart(function () {
         var name_player = $('#name_player').val().toString().replace(",", "");
         var surname_player = $('#surname_player').val().toString().replace(",", "");
         var surname2_player = $('#surname2_player').val().toString().replace(",", "");
-        $(".loader-txt").html("<p>Buscant partides de <strong>"+ name_player + " " + surname_player + " " + surname2_player +"</strong><br><br><small>Esperi si us plau.</small></p>")
+        $(".loader-txt").html("<p>Buscant partides de <strong>" + name_player + " " + surname_player + " " + surname2_player + "</strong><br><br><small>Esperi si us plau.</small></p>")
         $("#loadMe").modal({
             backdrop: "static", //remove ability to close modal with click
             keyboard: false, //remove option to close with keyboard
             show: true //Display loader!
         });
     });
-    
+
     $(document).ajaxComplete(function () {
         $("#loadMe").modal("hide");
     });
@@ -118,7 +118,7 @@ $(document).ready(function () {
     };
 
     function getMovesAsFENs(chessObj) {
-        return chessObj.history().map(function(move) {
+        return chessObj.history().map(function (move) {
             chessObj.move(move);
             return chessObj.fen();
         });
@@ -140,11 +140,11 @@ $(document).ready(function () {
     }
 
     var board, //the chessboard
-            game, //the current  game
-            games, //array of all loaded games
-            gameHistory,
-            currentPly,
-            currentGame;
+        game, //the current  game
+        games, //array of all loaded games
+        gameHistory,
+        currentPly,
+        currentGame;
     //key bindings
     $(document).keydown(function (e) {
         if (e.keyCode == 39) { //right arrow
@@ -183,9 +183,13 @@ $(document).ready(function () {
             return false;
         }
     });
-    
+
     function enableButton() {
         $('#find_player').prop('disabled', false);
+    }
+
+    function decode_utf8(s) {
+        return decodeURIComponent(escape(s));
     }
 
     // find players into database
@@ -207,19 +211,19 @@ $(document).ready(function () {
             enableButton();
             return false;
         }
-        
+
         if (name_player.length < 2 && surname_player == '' && surname2_player == '') {
             alert("Has de posar un nom amb més d'una lletra");
             enableButton();
             return false;
         }
-        
+
         if (name_player == '' && surname_player.length < 2 && surname2_player == '') {
             alert("Has de posar un cognom1 amb més d'una lletra");
             enableButton();
             return false;
         }
-        
+
         if (name_player.length == '' && surname_player == '' && surname2_player.length < 2) {
             alert("Has de posar un cognom2 amb més d'una lletra");
             enableButton();
@@ -240,7 +244,7 @@ $(document).ready(function () {
             error: function (jqXHR, textStatus, errorThrown) {
                 enableButton();
                 console.log('Error: ' + JSON.parse(errorThrown) + ' ' + JSON.parse(textStatus) + ' ' + JSON.parse(jqXHR));
-                
+
             },
             beforeSend: function () {
                 $('#find_player').prop('disabled', true);
@@ -277,13 +281,13 @@ $(document).ready(function () {
 
                         if (typeof h.White !== 'undefined' && typeof h.Black !== 'undefined') {
                             dataTable.push({
-                                tournament: h.Event,
+                                tournament: decode_utf8(h.Event),
                                 year: h.Date,
-                                white: h.White,
-                                black: h.Black,
+                                white: decode_utf8(h.White),
+                                black: decode_utf8(h.Black),
                                 result: h.Result,
                                 eco: h.ECO,
-                                btn: '<button class="edit btn btn-success show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye"></i></button>'
+                                btn: '<button class="edit btn btn-success show-pgn" value="' + i + '" type="button" title="Veure partida"><i class="fa fa-eye fa-lg"></i></button>'
                             });
 
                         }
@@ -291,13 +295,12 @@ $(document).ready(function () {
                     enableButton();
                     $('#myTable').DataTable({
                         data: dataTable,
-                        pageLength: 20,
+                        pageLength: 15,
                         destroy: true,
                         order: [
                             [0, 'desc']
                         ],
-                        "columns": [
-                            {
+                        "columns": [{
                                 "data": "tournament"
                             },
                             {
