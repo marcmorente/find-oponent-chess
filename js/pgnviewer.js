@@ -243,6 +243,7 @@ $(document).ready(function () {
             type: "POST",
             error: function (jqXHR, textStatus, errorThrown) {
                 enableButton();
+                $("#loadMe").modal("hide");
                 console.log('Error: ' + JSON.parse(errorThrown) + ' ' + JSON.parse(textStatus) + ' ' + JSON.parse(jqXHR));
 
             },
