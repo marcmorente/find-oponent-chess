@@ -1,7 +1,8 @@
 <?php
-
+//Only for local
 //ini_set('MAX_EXECUTION_TIME', '-1');
 ini_set('memory_limit', '1G'); // or you could use 1G
+//Only for local
 //set_time_limit(0);
 require_once("../autoload.php");
 
