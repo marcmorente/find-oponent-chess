@@ -11,7 +11,7 @@ $dir   = '../pgn';
 $files = scandir($dir);
 
 header('Content-Type: text/php');
-/*if (count($files) > 2) {
+if (count($files) > 2) {
     foreach ($files as $file) {
         if ($file != '.' && $file != '..') {
             $parser        = new PgnParser("$dir/$file");
@@ -25,4 +25,4 @@ header('Content-Type: text/php');
     }
 } else {
     echo "<strong>No hi ha cap arxiu per afegir a la base de dades.</strong>";
-}*/
+}
