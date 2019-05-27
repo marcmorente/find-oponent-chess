@@ -189,7 +189,7 @@ $(document).ready(function () {
     }
 
     function decode_utf8(s) {
-        return decodeURIComponent(escape(s));
+        return decodeURIComponent(s);
     }
 
     // find players into database
