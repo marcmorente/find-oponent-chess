@@ -12,7 +12,7 @@ class PgnGame
     private $moves;
     private $pgn;
 
-    function __construct($pgn)
+    public function __construct($pgn)
     {
         $this->pgn = $pgn;
 
@@ -59,8 +59,8 @@ class PgnGame
 
     private function parseMoves()
     {
-        $moves         = '';
-        $parser        = new PgnGameParser($this->pgn);
+        $moves = '';
+        $parser = new PgnGameParser($this->pgn);
         $pgnParsedData = $parser->getParsedData();
         foreach ($pgnParsedData['moves'] as $value) {
             if (isset($value['m'])) {
@@ -71,82 +71,82 @@ class PgnGame
         $this->setMoves($moves);
     }
 
-    function getEvent()
+    public function getEvent()
     {
         return $this->event;
     }
 
-    function getDate()
+    public function getDate()
     {
         return $this->date;
     }
 
-    function getWhite()
+    public function getWhite()
     {
         return $this->white;
     }
 
-    function getBlack()
+    public function getBlack()
     {
         return $this->black;
     }
 
-    function getResult()
+    public function getResult()
     {
         return $this->result;
     }
 
-    function getEco()
+    public function getEco()
     {
         return $this->eco;
     }
 
-    function getPgn()
+    public function getPgn()
     {
         return $this->pgn;
     }
 
-    function setEvent($event)
+    public function setEvent($event)
     {
         $this->event = $event;
     }
 
-    function setDate($date)
+    public function setDate($date)
     {
         $this->date = $date;
     }
 
-    function setWhite($white)
+    public function setWhite($white)
     {
         $this->white = $white;
     }
 
-    function setBlack($black)
+    public function setBlack($black)
     {
         $this->black = $black;
     }
 
-    function setResult($result)
+    public function setResult($result)
     {
         $this->result = $result;
     }
 
-    function setEco($eco)
+    public function setEco($eco)
     {
         $this->eco = $eco;
     }
 
-    function setPgn($pgn)
+    public function setPgn($pgn)
     {
         $this->pgn = $pgn;
     }
 
-    function getMoves()
+    public function getMoves()
     {
         return $this->moves;
     }
 
-    function setMoves($moves)
+    public function setMoves($moves)
     {
         $this->moves = $moves;
     }
