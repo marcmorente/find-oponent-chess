@@ -7,10 +7,19 @@ ini_set('memory_limit', '1G'); // or you could use 1G
 require_once "../autoload.php";
 
 $DatabaseGames = new DatabaseGames();
-$name_player = $_POST['name_player'];
-$surname_player = $_POST['surname_player'];
-$surname2_player = $_POST['surname2_player'];
-$player_list = $DatabaseGames->getGamesToDatabaseByName($name_player, $surname_player, $surname2_player);
+$player_name = $_POST['player_name'];
+$player_surname = $_POST['player_surname'];
+$player_surname2 = $_POST['player_surname2'];
+
+if (
+    (!empty($player_name) && strlen($player_name) < 255) || 
+    (!empty($player_surname) && strlen($player_surname) < 255) || 
+    (!empty($player_surname2) && strlen($player_surname2) < 255)
+) {
+    $DatabaseGames->setInputSearchToDatabase($player_name, $player_surname, $player_surname2);
+}
+
+$player_list = $DatabaseGames->getGamesFromDatabaseByName($player_name, $player_surname, $player_surname2);
 $games[] = [];
 $i = 0;
 

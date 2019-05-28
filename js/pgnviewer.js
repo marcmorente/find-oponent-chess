@@ -2,25 +2,25 @@ $(document).ready(function() {
     var pgnData = [];
 
     $(document).ajaxStart(function() {
-        var name_player = $("#name_player")
+        var player_name = $("#player_name")
             .val()
             .toString()
             .replace(",", "");
-        var surname_player = $("#surname_player")
+        var player_surname = $("#player_surname")
             .val()
             .toString()
             .replace(",", "");
-        var surname2_player = $("#surname2_player")
+        var player_surname2 = $("#player_surname2")
             .val()
             .toString()
             .replace(",", "");
         $(".loader-txt").html(
             "<p>Buscant partides de <strong>" +
-                name_player +
+                player_name +
                 " " +
-                surname_player +
+                player_surname +
                 " " +
-                surname2_player +
+                player_surname2 +
                 "</strong><br><br><small>Esperi si us plau.</small></p>"
         );
         $("#loadMe").modal({
@@ -244,23 +244,23 @@ $(document).ready(function() {
         var dataTable = [];
         pgnData.length = 0; //clear the array for the next search
 
-        var name_player = $("#name_player")
+        var player_name = $("#player_name")
             .val()
             .toString()
             .replace(",", "");
-        var surname_player = $("#surname_player")
+        var player_surname = $("#player_surname")
             .val()
             .toString()
             .replace(",", "");
-        var surname2_player = $("#surname2_player")
+        var player_surname2 = $("#player_surname2")
             .val()
             .toString()
             .replace(",", "");
 
         if (
-            name_player == "" &&
-            surname_player == "" &&
-            surname2_player == ""
+            player_name == "" &&
+            player_surname == "" &&
+            player_surname2 == ""
         ) {
             alert("Has d'omplir algun nom");
             enableButton();
@@ -268,9 +268,9 @@ $(document).ready(function() {
         }
 
         if (
-            name_player.length < 2 &&
-            surname_player == "" &&
-            surname2_player == ""
+            player_name.length < 2 &&
+            player_surname == "" &&
+            player_surname2 == ""
         ) {
             alert("Has de posar un nom amb més d'una lletra");
             enableButton();
@@ -278,9 +278,9 @@ $(document).ready(function() {
         }
 
         if (
-            name_player == "" &&
-            surname_player.length < 2 &&
-            surname2_player == ""
+            player_name == "" &&
+            player_surname.length < 2 &&
+            player_surname2 == ""
         ) {
             alert("Has de posar un cognom1 amb més d'una lletra");
             enableButton();
@@ -288,9 +288,9 @@ $(document).ready(function() {
         }
 
         if (
-            name_player.length == "" &&
-            surname_player == "" &&
-            surname2_player.length < 2
+            player_name.length == "" &&
+            player_surname == "" &&
+            player_surname2.length < 2
         ) {
             alert("Has de posar un cognom2 amb més d'una lletra");
             enableButton();
@@ -298,9 +298,9 @@ $(document).ready(function() {
         }
 
         var parametros = {
-            name_player: name_player,
-            surname_player: surname_player,
-            surname2_player: surname2_player
+            player_name: player_name,
+            player_surname: player_surname,
+            player_surname2: player_surname2
         };
 
         $.ajax({
