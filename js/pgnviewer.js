@@ -401,6 +401,7 @@ $(document).ready(function() {
         var val = $(this).val();
         loadGame(val);
         $("#game-data").show();
+        $("html, body").animate({ scrollTop: 0 }, "slow");
     });
 
     $(document).delegate("#currentFen", "click", function(e) {
