@@ -18,7 +18,7 @@ if (count($files) > 2) {
             $DatabaseGames = new DatabaseGames();
             if ($DatabaseGames->setPgnToDatabase($pgn)) {
                 echo "Partides de l'arxiu <strong>$file</strong>, s'han afegit a la base de dades correctament.<br>";
-                rename("$dir/$file", "../data/$file");
+                //rename("$dir/$file", "../data/$file");
             }
         }
     }
