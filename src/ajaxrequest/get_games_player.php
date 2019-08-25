@@ -27,7 +27,7 @@ if (count($player_list) > 0) {
     foreach ($player_list as $value) {
         $value['pgn'] = str_replace("'", "\'", $value['pgn']);
         foreach (preg_split("/((\r?\n)|(\r\n?))/", $value['pgn']) as $line) {
-            $games[$i][] = utf8_encode($line);
+            $games[$i][] = $line;
         }
         $i++;
     }

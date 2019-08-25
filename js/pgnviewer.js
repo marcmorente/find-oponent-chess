@@ -230,10 +230,6 @@ $(document).ready(function() {
         $("#find_player").prop("disabled", false);
     }
 
-    function decode_utf8(s) {
-        return decodeURIComponent(s);
-    }
-
     // find players into database
     $(document).delegate("#find_player", "click", function(e) {
         e.preventDefault();
@@ -357,10 +353,10 @@ $(document).ready(function() {
                             typeof h.Black !== "undefined"
                         ) {
                             dataTable.push({
-                                tournament: decode_utf8(h.Event),
+                                tournament: h.Event,
                                 year: h.Date,
-                                white: decode_utf8(h.White),
-                                black: decode_utf8(h.Black),
+                                white: h.White,
+                                black: h.Black,
                                 result: h.Result,
                                 eco: h.ECO,
                                 btn:
