@@ -3,11 +3,12 @@
 abstract class MysqlDatabaseConnection
 {
 
-    protected $username = 'root';
-    protected $password = '';
-    protected $host = 'localhost';
-    protected $db_name = 'chess';
-    protected $data_source_name;
+    private $username = 'root';
+    private $password = '';
+    private $host = 'localhost';
+    private $db_name = 'chess';
+    private $data_source_name;
+    
     protected $database_handle;
 
     public function __construct()
