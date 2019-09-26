@@ -20,6 +20,9 @@ abstract class MysqlDatabaseConnection
         try {
             $data_source_name = "mysql:host={$host};dbname={$db_name};charset=utf8";
             $this->database_handle = new \PDO($data_source_name, $username, $password);
+            /* Only debug mode
+            $this->database_handle->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->database_handle->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);*/
         } catch (\PDOException $e) {
             echo $e->getMessage();
         }
