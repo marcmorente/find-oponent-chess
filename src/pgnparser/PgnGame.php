@@ -68,7 +68,7 @@ class PgnGame
             }
         }
 
-        $this->setMoves($moves);
+        $this->setMoves(md5($moves));
     }
 
     public function getEvent()

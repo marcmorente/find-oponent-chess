@@ -16,7 +16,7 @@ class DatabaseGamesTest extends TestCase
         $surname_player = "garcia";
         $surname2_player = "";
         
-        $database = new DatabaseGames();
+        $database = new QueryGames();
         
         // given
         $result = $database->getGamesToDatabaseByName($name_player, $surname_player, $surname2_player);

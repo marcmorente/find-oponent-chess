@@ -230,7 +230,7 @@ $(document).ready(function() {
         $("#find_player").prop("disabled", false);
     }
 
-    // find players into database
+    // find players into models
     $(document).delegate("#find_player", "click", function(e) {
         e.preventDefault();
         board = new ChessBoard("board", cfg);
