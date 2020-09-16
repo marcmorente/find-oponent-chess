@@ -13,19 +13,21 @@ $dir = '../pgn';
 $files = scandir($dir);
 
 header('Content-Type: text/php');
-$count = 0;
+$count = 1;
 
 if (count($files) > 2) {
     foreach ($files as $file) {
-        if ($file != '.' && $file != '..' && $count === 2) {
+        if ($file != '.' && $file != '..') {
             $parser = new PgnParser("$dir/$file");
             $pgn = $parser->getUnparsedGames();
-            $persistGames = new PersistGames($pgn);
-            if ($persistGames->setPgn()) {
-                echo "Partides de l'arxiu <strong>$file</strong>, s'han afegit a la base de dades correctament.<br>";
+            $db = new MysqlDatabaseRepository();
+            $persistGames = new PersistGames($pgn, $db);
+            if ($persistGames->setPgn() === true) {
+                echo "Partides de l'arxiu $file, s'han afegit a la base de dades correctament.\n";
                 //rename("$dir/$file", "../data/$file");
             }
         }
+
         $count++;
     }
 } else {

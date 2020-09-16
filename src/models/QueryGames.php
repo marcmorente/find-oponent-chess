@@ -15,46 +15,17 @@ class QueryGames
     private $full_name;
     private $array_moves_pgn = [];
 
-    public function __construct()
+    public function __construct(DatabaseRepository $db)
     {
-        $this->db = new MysqlDatabaseConnection();
+        $this->db = $db;
     }
 
-
-    public function setInputSearchToDatabase($player_name, $player_surname, $player_surname2)
+    public function getDatabaseMoves($moves)
     {
-        $query = 'INSERT INTO input_search(player_name, player_surname, player_surname2) VALUES (?, ?, ?)';
+        $query = 'SELECT moves FROM games WHERE moves = :moves LIMIT 1';
+        $row = $this->db->select($query, [':moves' => $moves]);
 
-        $stmt = $this->db->connect()->prepare($query);
-        $stmt->bindParam(1, $player_name, PDO::PARAM_STR);
-        $stmt->bindParam(2, $player_surname, PDO::PARAM_STR);
-        $stmt->bindParam(3, $player_surname2, PDO::PARAM_STR);
-
-        if (!$stmt->execute()) {
-            return false;
-        }
-
-    }
-
-    public function getDatabaseMoves()
-    {
-
-
-        $array_moves = [];
-        $query = 'SELECT moves FROM games';
-        $stmt = $this->db->connect()->prepare($query);
-        $stmt->execute();
-        $row = $stmt->fetchAll();
-
-        foreach ($row as $value) {
-            if (!empty($value['moves'])) {
-                $array_moves[] = $value['moves'];
-            }
-        }
-
-        $this->db->disconnect();
-
-        return $array_moves;
+        return $row['moves'];
     }
 
     public function getGamesByName($player_name, $player_surname, $player_surname2)
