@@ -8,6 +8,7 @@ class MysqlDatabaseRepository implements DatabaseRepository
     private $host = 'localhost';
     private $db_name = 'chess';
 
+
     private $db;
     private $last_error;
 

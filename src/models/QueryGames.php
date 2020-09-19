@@ -12,7 +12,7 @@ class QueryGames
     public function __construct(DatabaseRepository $db)
     {
         $this->db = $db;
-        $this->limit = 2500;
+        $this->limit = 3000;
     }
 
     public function checkIfGameExists($moves)
