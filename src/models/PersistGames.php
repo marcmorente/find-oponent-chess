@@ -14,17 +14,16 @@ class PersistGames
 
     public function setPgn()
     {
-        $db = new MysqlDatabaseRepository();
-        $query_games = new QueryGames($db);
+        $query_games = new QueryGames($this->db);
 
 
         for ($index = 0; $index < count($this->games); $index++) {
             $game           = $this->games[$index];
             $pgn_game       = new PgnGame($game);
             $moves          = $pgn_game->getMoves();
-            $database_moves = $query_games->getDatabaseMoves($moves);
+            $database_moves = $query_games->checkIfGameExists($moves);
+            
             if ($moves != '' && empty($database_moves)) {
-                var_dump($database_moves);
                 $white = $pgn_game->getWhite();
                 $black = $pgn_game->getBlack();
 
@@ -36,6 +35,10 @@ class PersistGames
                 ];
 
                 $this->db->insert('games', $values);
+            }
+
+            if (!empty($database_moves)) {
+                echo "Aquesta partida --> $database_moves ja existeix. \n";
             }
         }
 

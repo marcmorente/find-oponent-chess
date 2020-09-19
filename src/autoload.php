@@ -22,6 +22,7 @@ spl_autoload_register(
                 'databaserepository' => '/models/DatabaseRepository.php',
                 'querygames' => '/models/QueryGames.php',
                 'persistgames' => '/models/PersistGames.php',
+                'persistnamesearched' => '/models/PersistNameSearched.php',
                 'forceutf8' => '/ForceUTF8/Encoding.php',
                 'pgnparser' => '/pgnparser/PgnParser.php'
             );

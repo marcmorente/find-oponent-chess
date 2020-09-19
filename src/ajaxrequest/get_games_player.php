@@ -6,7 +6,9 @@ ini_set('memory_limit', '1G'); // or you could use 1G
 //set_time_limit(0);
 require_once "../autoload.php";
 
-$queryGames      = new QueryGames();
+$db            = new MysqlDatabaseRepository();
+$query_games   = new QueryGames($db);
+
 $player_name     = $_POST['player_name'];
 $player_surname  = $_POST['player_surname'];
 $player_surname2 = $_POST['player_surname2'];
@@ -16,10 +18,11 @@ if (
     (!empty($player_surname) && strlen($player_surname) < 255) ||
     (!empty($player_surname2) && strlen($player_surname2) < 255)
 ) {
-    $queryGames->setInputSearchToDatabase($player_name, $player_surname, $player_surname2);
+    $insert_search = new PersistNameSearched($db);
+    $insert_search->persistNameSearched($player_name, $player_surname, $player_surname2);
 }
 
-$player_list = $queryGames->getGamesByName($player_name, $player_surname, $player_surname2);
+$player_list = $query_games->getGamesByName($player_name, $player_surname, $player_surname2);
 $games[]     = [];
 $i           = 0;
 
