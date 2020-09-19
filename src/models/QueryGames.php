@@ -17,8 +17,8 @@ class QueryGames
 
     public function checkIfGameExists($moves)
     {
-        $query = 'SELECT id FROM games WHERE moves LIKE :moves LIMIT 1';
-        $row = $this->db->select($query, [':moves' => '%' . $moves . '%']);
+        $query = 'SELECT id FROM games WHERE moves = :moves LIMIT 1';
+        $row = $this->db->select($query, [':moves' => $moves]);
 
         return $row['id'];
     }
