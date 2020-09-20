@@ -1,39 +1,6 @@
 $(document).ready(function() {
     var pgnData = [];
 
-    $(document).ajaxStart(function() {
-        var player_name = $("#player_name")
-            .val()
-            .toString()
-            .replace(",", "");
-        var player_surname = $("#player_surname")
-            .val()
-            .toString()
-            .replace(",", "");
-        var player_surname2 = $("#player_surname2")
-            .val()
-            .toString()
-            .replace(",", "");
-        $(".loader-txt").html(
-            "<p>Buscant partides de <strong>" +
-                player_name +
-                " " +
-                player_surname +
-                " " +
-                player_surname2 +
-                "</strong><br><br><small>Esperi si us plau.</small></p>"
-        );
-        $("#loadMe").modal({
-            backdrop: "static", //remove ability to close modal with click
-            keyboard: false, //remove option to close with keyboard
-            show: true //Display loader!
-        });
-    });
-
-    $(document).ajaxComplete(function() {
-        $("#loadMe").modal("hide");
-    });
-
     //Write the game to the DOM
     function writeGameText(g) {
         //remove the header to get the moves
@@ -233,6 +200,8 @@ $(document).ready(function() {
     // find players into models
     $(document).delegate("#find_player", "click", function(e) {
         e.preventDefault();
+        $('body').addClass('wait');
+        $("#find_player").prop("disabled", true);
         board = new ChessBoard("board", cfg);
         $(window).resize(board.resize);
         $("#table").hide();
@@ -244,59 +213,21 @@ $(document).ready(function() {
             .val()
             .toString()
             .replace(",", "");
-        var player_surname = $("#player_surname")
-            .val()
-            .toString()
-            .replace(",", "");
-        var player_surname2 = $("#player_surname2")
-            .val()
-            .toString()
-            .replace(",", "");
 
-        if (
-            player_name == "" &&
-            player_surname == "" &&
-            player_surname2 == ""
-        ) {
+        if (player_name == "") {
             alert("Has d'omplir algun nom");
             enableButton();
             return false;
         }
 
-        if (
-            player_name.length < 2 &&
-            player_surname == "" &&
-            player_surname2 == ""
-        ) {
+        if ( player_name.length < 2) {
             alert("Has de posar un nom amb més d'una lletra");
             enableButton();
             return false;
         }
 
-        if (
-            player_name == "" &&
-            player_surname.length < 2 &&
-            player_surname2 == ""
-        ) {
-            alert("Has de posar un cognom1 amb més d'una lletra");
-            enableButton();
-            return false;
-        }
-
-        if (
-            player_name.length == "" &&
-            player_surname == "" &&
-            player_surname2.length < 2
-        ) {
-            alert("Has de posar un cognom2 amb més d'una lletra");
-            enableButton();
-            return false;
-        }
-
         var parametros = {
-            player_name: player_name,
-            player_surname: player_surname,
-            player_surname2: player_surname2
+            player_name: player_name
         };
 
         $.ajax({
@@ -306,7 +237,6 @@ $(document).ready(function() {
             type: "POST",
             error: function(jqXHR, textStatus, errorThrown) {
                 enableButton();
-                $("#loadMe").modal("hide");
                 console.log(
                     "Error: " +
                         JSON.parse(errorThrown) +
@@ -316,10 +246,8 @@ $(document).ready(function() {
                         JSON.parse(jqXHR)
                 );
             },
-            beforeSend: function() {
-                $("#find_player").prop("disabled", true);
-            },
             success: function(p) {
+                $('body').removeClass('wait');
                 if (p.toString() != "not_found") {
                     for (var i = 0; i < p.length; i++) {
                         pgnData.push(p[i]);

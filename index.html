@@ -8,13 +8,15 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700,400italic,700italic|Roboto+Slab:400,700"
         rel="stylesheet" type="text/css" />
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="stylesheets/autocomplete.min.css">
     <link rel="stylesheet" href="chessboardjs/css/chessboard-0.3.0.min.css" />
-    <link rel="stylesheet" href="stylesheets/style.css" />
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    
+    <link rel="stylesheet" href="stylesheets/style.min.css" />
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" />
     <link rel="stylesheet" href="stylesheets/loading.css" />
     <link rel="stylesheet" href="stylesheets/sweetalert2.min.css">
+    <link rel="stylesheet" href="stylesheets/own.min.css" />
     <!--<link rel="stylesheet" href="stylesheets/center.modal.css" />-->
 
     <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
@@ -90,25 +92,12 @@
             <div class="col-lg-7 col-md-7 col-xs-12">
                 <form class="form-horizontal" action="/action_page.php">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email">Nom:</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="player_name" />
+                        <label class="control-label col-sm-3">Cognoms, Nom:</label>
+                        <div class="col-sm-6 p-0">
+                            <input type="text" class="form-control" id="player_name"
+                                placeholder="Exemple: Gimenez Fernandez Paula" />
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="pwd">1r Cognom:</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="player_surname" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="pwd">2n Cognom:</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="player_surname2" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
+                        <div class="col-sm-3">
                             <button class="btn btn-primary" id="find_player">
                                 <i class="fa fa-search fa-1x"></i>&nbsp;<strong>Buscar</strong>
                             </button>
@@ -152,13 +141,15 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
     <script charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script charset="utf8" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="js/jquery.autocomplete.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="js/sweetalert2.min.js"></script>
     <script src="chessboardjs/js/chessboard-0.3.0.min.js"></script>
     <script src="chessjs/chess.min.js"></script>
+    <script src="js/search.min.js"></script>
     <script src="js/pgnviewer.min.js"></script>
     <script src="js/uploadgames.js"></script>
 

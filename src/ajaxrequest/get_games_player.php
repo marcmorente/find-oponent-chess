@@ -13,16 +13,12 @@ $player_name     = $_POST['player_name'];
 $player_surname  = $_POST['player_surname'];
 $player_surname2 = $_POST['player_surname2'];
 
-if (
-    (!empty($player_name) && strlen($player_name) < 255) ||
-    (!empty($player_surname) && strlen($player_surname) < 255) ||
-    (!empty($player_surname2) && strlen($player_surname2) < 255)
-) {
+if (!empty($player_name) && strlen($player_name) < 255) {
     $insert_search = new PersistNameSearched($db);
     $insert_search->persistNameSearched($player_name, $player_surname, $player_surname2);
 }
 
-$player_list = $query_games->getGamesByName($player_name, $player_surname, $player_surname2);
+$player_list = $query_games->getGamesByName($player_name);
 $games[]     = [];
 $i           = 0;
 
