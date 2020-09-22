@@ -10,12 +10,10 @@ $db            = new MysqlDatabaseRepository();
 $query_games   = new QueryGames($db);
 
 $player_name     = $_POST['player_name'];
-$player_surname  = $_POST['player_surname'];
-$player_surname2 = $_POST['player_surname2'];
 
 if (!empty($player_name) && strlen($player_name) < 255) {
     $insert_search = new PersistNameSearched($db);
-    $insert_search->persistNameSearched($player_name, $player_surname, $player_surname2);
+    $insert_search->persistNameSearched($player_name);
 }
 
 $player_list = $query_games->getGamesByName($player_name);
