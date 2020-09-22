@@ -4,7 +4,7 @@ class MysqlDatabaseRepository implements DatabaseRepository
 {
 
     private $username = 'root';
-    private $password = '';
+    private $password = 'mmp51159';
     private $host = 'localhost';
     private $db_name = 'chess';
 

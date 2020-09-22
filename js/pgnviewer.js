@@ -310,7 +310,29 @@ $(document).ready(function() {
                             { data: "result" },
                             { data: "eco" },
                             { data: "btn" }
-                        ]
+                        ],
+                        language: {
+                            processing:     "Processant...",
+                            search:         "Cerca:",
+                            lengthMenu:     "Mostrar _MENU_ registres",
+                            info:           "Mostrant _START_ de _END_ d&apos;un total de _TOTAL_ registre(s)",
+                            infoEmpty:      "Mostrant 0 de 0 d&apos;un total de 0 registres",
+                            infoFiltered:   "(filtrat de _MAX_ registre(s) en total)",
+                            infoPostFix:    "",
+                            loadingRecords: "S&apos;est&agrave; carregant...",
+                            zeroRecords:    "No hi ha elements per mostrar",
+                            emptyTable:     "No hi ha dades disponibles a la taula",
+                            paginate: {
+                                first:      "Primer",
+                                previous:   "Anterior",
+                                next:       "Següent",
+                                last:       "&Uacute;ltim"
+                            },
+                            aria: {
+                                sortAscending:  ": activeu per ordenar la columna en ordre ascendent",
+                                sortDescending: ": activeu per ordenar la columna en ordre descendent"
+                            }
+                        }
                     });
                     $("#table").show();
                 } else {
