@@ -24,7 +24,8 @@ spl_autoload_register(
                 'persistgames' => '/models/PersistGames.php',
                 'persistnamesearched' => '/models/PersistNameSearched.php',
                 'forceutf8' => '/ForceUTF8/Encoding.php',
-                'pgnparser' => '/pgnparser/PgnParser.php'
+                'pgnparser' => '/pgnparser/PgnParser.php',
+                'splitname' => '/includes/SplitName.php'
             );
         }
         $cn = strtolower($class);

@@ -200,7 +200,7 @@ $(document).ready(function() {
     // find players into models
     $(document).delegate("#find_player", "click", function(e) {
         e.preventDefault();
-        $('body').addClass('wait');
+        $('body, input').addClass('wait');
         $("#find_player").prop("disabled", true);
         board = new ChessBoard("board", cfg);
         $(window).resize(board.resize);
@@ -217,12 +217,14 @@ $(document).ready(function() {
         if (player_name == "") {
             alert("Has d'omplir algun nom");
             enableButton();
+            $('body, input').removeClass('wait');
             return false;
         }
 
         if ( player_name.length < 2) {
             alert("Has de posar un nom amb més d'una lletra");
             enableButton();
+            $('body, input').removeClass('wait');
             return false;
         }
 
@@ -247,7 +249,7 @@ $(document).ready(function() {
                 );
             },
             success: function(p) {
-                $('body').removeClass('wait');
+                $('body, input').removeClass('wait');
                 if (p.toString() != "not_found") {
                     for (var i = 0; i < p.length; i++) {
                         pgnData.push(p[i]);

@@ -17,9 +17,9 @@ if (count($files) > 2) {
     foreach ($files as $file) {
         if ($file != '.' && $file != '..') {
             $parser = new PgnParser("$dir/$file");
-            $pgn = $parser->getUnparsedGames();
+            $pgn    = $parser->getUnparsedGames();
 
-            $db = new MysqlDatabaseRepository();
+            $db           = new MysqlDatabaseRepository();
             $persistGames = new PersistGames($pgn, $db);
 
             $persistGames->setPgn();

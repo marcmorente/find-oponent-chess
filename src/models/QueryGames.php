@@ -5,13 +5,12 @@
  */
 class QueryGames
 {
-
     private $db;
     private $limit;
 
     public function __construct(DatabaseRepository $db)
     {
-        $this->db = $db;
+        $this->db    = $db;
         $this->limit = 3000;
     }
 
@@ -25,16 +24,33 @@ class QueryGames
 
     public function getName($name)
     {
-        $autocomplete = [];
-        $query = 'SELECT white_player FROM `games` WHERE '
-            . 'white_player LIKE :wname GROUP BY white_player LIMIT 20';
+        $split_name = new SplitName($name);
+        $split      = $split_name->buildSplit();
 
-        $row = $this->db->select($query, [
-            ':wname'    => '%' . $name . '%'
-        ]);
+        $autocomplete['suggestions'] = [];
+
+        $query = 'SELECT white_player, black_player FROM games WHERE '
+            . $split['query'] . ' GROUP BY white_player, black_player LIMIT 20';
+
+        $row = $this->db->select($query, $split['binds']);
 
         foreach ($row as $res) {
-            $autocomplete['suggestions'][]['value'] = $res['white_player'];
+            $white_player = $res['white_player'];
+            $black_player = $res['black_player'];
+
+            if (
+                preg_match('/' . $split["regex"] . '/i', $white_player) &&
+                !in_array($white_player, $autocomplete['suggestions'])
+            ) {
+                $autocomplete['suggestions'][] = $white_player;
+            }
+
+            if (
+                preg_match('/' . $split["regex"] . '/i', $black_player) &&
+                !in_array($black_player, $autocomplete['suggestions'])
+            ) {
+                $autocomplete['suggestions'][] = $black_player;
+            }
         }
 
         return $autocomplete;
@@ -42,11 +58,34 @@ class QueryGames
 
     public function getGamesByName($name)
     {
-        $query = 'SELECT pgn FROM games WHERE white_player LIKE :wp OR black_player LIKE :bp LIMIT ' . $this->limit;
+        $split_name = new SplitName($name);
+        $split = $split_name->buildSplit();
 
-        return $this->db->select($query, [
-            ':wp' => '%' . $name . '%',
-            ':bp' => '%' . $name . '%'
-        ]);
+        $query = 'SELECT pgn FROM games WHERE '
+            . $split['query'] . ' LIMIT ' . $this->limit;
+
+        return $this->db->select($query, $split['binds']);
+    }
+
+    public function print_query($query, $binds = null, $print = true)
+    {
+        $find = $repl = array();
+        if (!empty($binds)) {
+            foreach ($binds as $k => $v) {
+                if (substr($k, 0, 1) == ':')
+                    $k = substr($k, 1);
+
+                array_push($find, ':' . $k);
+                array_push($repl, "'$v'");
+            }
+        }
+
+        $query_out = str_replace($find, $repl, $query);
+
+        if ($print) {
+            echo $query_out;
+        } else {
+            return $query_out;
+        }
     }
 }

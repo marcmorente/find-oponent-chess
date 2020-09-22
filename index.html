@@ -10,7 +10,7 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="stylesheets/autocomplete.min.css">
     <link rel="stylesheet" href="chessboardjs/css/chessboard-0.3.0.min.css" />
-    
+
     <link rel="stylesheet" href="stylesheets/style.min.css" />
     <link rel="stylesheet" href="stylesheets/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" />
@@ -90,19 +90,14 @@
             </div>
 
             <div class="col-lg-7 col-md-7 col-xs-12">
-                <form class="form-horizontal" action="/action_page.php">
+                <form class="form-inline">
                     <div class="form-group">
-                        <label class="control-label col-sm-3">Cognoms, Nom:</label>
-                        <div class="col-sm-6 p-0">
-                            <input type="text" class="form-control" id="player_name"
-                                placeholder="Exemple: Gimenez Fernandez Paula" />
-                        </div>
-                        <div class="col-sm-3">
-                            <button class="btn btn-primary" id="find_player">
-                                <i class="fa fa-search fa-1x"></i>&nbsp;<strong>Buscar</strong>
-                            </button>
-                        </div>
+                        <label for="nom">Nom:</label>
+                        <input type="text" class="form-control" id="player_name" />
                     </div>
+                    <button class="btn btn-primary" id="find_player">
+                        <i class="fa fa-search fa-1x"></i>&nbsp;<strong>Buscar</strong>
+                    </button>
                 </form>
 
                 <div id="game-data"></div>
