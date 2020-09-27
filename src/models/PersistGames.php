@@ -12,10 +12,9 @@ class PersistGames
         $this->db    = $db;
     }
 
-    public function setPgn()
+    public function setPgn($debug=false)
     {
         $query_games = new QueryGames($this->db);
-
 
         for ($index = 0; $index < count($this->games); $index++) {
             $game           = $this->games[$index];
@@ -35,9 +34,13 @@ class PersistGames
                 ];
 
                 $this->db->insert('games', $values);
+
+                if (!empty($this->db->last_error)) {
+                    throw new RuntimeException('Error important arxiu! '.$this->db->last_error);
+                }
             }
 
-            if (!empty($database_moves)) {
+            if (!empty($database_moves) && $debug) {
                 echo "Aquesta partida --> $database_moves ja existeix. \n";
             }
         }

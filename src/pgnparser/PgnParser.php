@@ -15,7 +15,7 @@ class PgnParser
             $this->pgnFile = $this->sanitize($pgnFile);
 
             if (!file_exists($this->pgnFile)) {
-                throw new Exception("File not found: " . $this->pgnFile);
+                throw new RuntimeException("File not found: " . $this->pgnFile);
             }
         }
 

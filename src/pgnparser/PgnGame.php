@@ -68,7 +68,7 @@ class PgnGame
             }
         }
 
-        $this->setMoves(md5($moves));
+        $this->setMoves($moves);
     }
 
     public function getEvent()
@@ -143,6 +143,10 @@ class PgnGame
 
     public function getMoves()
     {
+        if (!empty($this->moves)) {
+            return md5($this->moves);
+        }
+        
         return $this->moves;
     }
 

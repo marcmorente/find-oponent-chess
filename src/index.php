@@ -22,7 +22,7 @@ if (count($files) > 2) {
             $db           = new MysqlDatabaseRepository();
             $persistGames = new PersistGames($pgn, $db);
 
-            $persistGames->setPgn();
+            $persistGames->setPgn($debug=true);
             echo "Partides de l'arxiu $file, s'han afegit a la base de dades correctament.\n";
         }
     }
