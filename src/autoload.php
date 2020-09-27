@@ -25,7 +25,8 @@ spl_autoload_register(
                 'persistnamesearched' => '/models/PersistNameSearched.php',
                 'forceutf8' => '/ForceUTF8/Encoding.php',
                 'pgnparser' => '/pgnparser/PgnParser.php',
-                'splitname' => '/includes/SplitName.php'
+                'splitname' => '/includes/SplitName.php',
+                'uploadpgn' => '/includes/UploadPGN.php'
             );
         }
         $cn = strtolower($class);

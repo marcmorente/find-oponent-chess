@@ -14,7 +14,14 @@ class UploadPGN
     private $error;
     private $size;
     private $extension;
-    private $validPGN = ['application/x-chess-pgn', 'application/da-chess-pgn'];
+    private $target;
+
+    private $validPGN = [
+        'application/x-chess-pgn', 
+        'application/da-chess-pgn', 
+        'application/vnd.chess-pgn',
+        'text/plain'
+    ];
 
     public function __construct($file)
     {
@@ -26,40 +33,32 @@ class UploadPGN
         $this->extension    = substr($this->fileName, strrpos($this->fileName, '.' ) + 1);
     }
     
-    private function checkMimeType($valid)
+    private function checkMimeType()
     {
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-        $ext = array_search(
-            $finfo->file($this->tmpName), 
-            $valid, 
-            true
+        return in_array(
+            mime_content_type($this->tmpName),
+            $this->validPGN
         );
-        
-        return $ext;
     }
 
     private function isPGN()
     {
-        if($this->checkMimeType($this->validPGN) && $this->extension == 'pgn') {
-            return true;
-        }
-        
-        return false;
+        return $this->checkMimeType() && $this->extension == 'pgn';
     }
 
     public function upload()
     {
         $fileName = $this->fileName;
-        $target   = '../../pgn';
+        $target   = $_SERVER['DOCUMENT_ROOT'].'/uploads';
 
         if (!is_dir($target)) {
-            mkdir($target, 0777, true);
+            mkdir($target, 7777, true);
         }
 
+        $this->getPgnFileName($fileName);
+
         if ($this->isPGN()) {
-            if (move_uploaded_file($this->tmpName, $target . DIRECTORY_SEPARATOR . $fileName)) {
-                return true;
-            }
+            return move_uploaded_file($this->tmpName, $target . DIRECTORY_SEPARATOR . $fileName);
         }
 
         return false;
@@ -100,5 +99,10 @@ class UploadPGN
         $cleanName = strtolower(trim($cleanName, '-'));
 
         return $cleanName;
+    }
+
+    public function getPgnFileName()
+    {
+        return $this->fileName;
     }
 }

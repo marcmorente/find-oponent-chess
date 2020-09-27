@@ -35,8 +35,8 @@ class QueryGames
         $row = $this->db->select($query, $split['binds']);
 
         foreach ($row as $res) {
-            $white_player = $res['white_player'];
-            $black_player = $res['black_player'];
+            $white_player = trim($res['white_player']);
+            $black_player = trim($res['black_player']);
 
             if (
                 preg_match('/' . $split["regex"] . '/i', $white_player) &&

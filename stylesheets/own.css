@@ -11,3 +11,7 @@
 .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
     cursor: wait;
 }
+
+.float-right {
+    float: right;
+}
