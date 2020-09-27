@@ -50,9 +50,16 @@ class UploadPGN
     {
         $fileName = $this->fileName;
         $target   = $_SERVER['DOCUMENT_ROOT'].'/uploads';
+        $log_dir   = $_SERVER['DOCUMENT_ROOT'].'/logs';
 
         if (!is_dir($target)) {
-            mkdir($target, 7777, true);
+            chmod($target, 0777);
+            mkdir($target, 0777, true);
+        }
+
+        if (!is_dir($log_dir)) {
+            chmod($log_dir, 0777);
+            mkdir($log_dir, 0777, true);
         }
 
         $this->getPgnFileName($fileName);

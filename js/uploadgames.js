@@ -58,9 +58,9 @@ function upload() {
 
         if (result.isConfirmed) {
             Swal.fire(
-                !result.error ? "Importatació correcta!" : "Error",
-                !result.error ? "Ja pots buscar les partides al sistema." : result.message,
-                !result.error ? "success" : "error"
+                !result.value.error ? "Importatació correcta!" : "Error",
+                !result.value.error ? "Ja pots buscar les partides al sistema." : result.value.message,
+                !result.value.error ? "success" : "error"
             );
         }
     });
