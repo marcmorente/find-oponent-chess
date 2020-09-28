@@ -64,7 +64,7 @@ class UploadPGN
 
         $this->getPgnFileName($fileName);
 
-        if ($this->isPGN()) {
+        if ($this->isPGN() && $this->size <= 20000000) {
             return move_uploaded_file($this->tmpName, $target . DIRECTORY_SEPARATOR . $fileName);
         }
 
