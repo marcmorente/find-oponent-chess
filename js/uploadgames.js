@@ -19,6 +19,7 @@ function upload() {
         title: "Selecciona un arxiu",
         showCancelButton: true,
         confirmButtonText: "Importar!",
+        cancelButtonText: "Cancel·lar",
         showLoaderOnConfirm: true,
         input: "file",
         willOpen: () => {
@@ -77,10 +78,10 @@ function checkFile(validPGN, fileToUpload) {
         return false;
     }
 
-    if (fileToUpload.size > 50000000) {
+    if (fileToUpload.size > 20000000) {
         Swal.fire(
             "Atenció!",
-            `L'arxiu és massa gran(${sizeInMB}), màxim 50MB.`,
+            `L'arxiu és massa gran(${sizeInMB}), màxim 20MB.`,
             "warning"
         );
         return false;
