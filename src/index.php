@@ -1,4 +1,4 @@
-º<?php
+<?php
 //Only for local
 ini_set('MAX_EXECUTION_TIME', '-1');
 ini_set('memory_limit', '1G'); // or you could use 1G
